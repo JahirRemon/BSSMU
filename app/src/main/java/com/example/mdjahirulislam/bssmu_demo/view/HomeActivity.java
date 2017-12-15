@@ -1,7 +1,8 @@
-package com.example.mdjahirulislam.bssmu_demo;
+package com.example.mdjahirulislam.bssmu_demo.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +13,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.example.mdjahirulislam.bssmu_demo.R;
+
+import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -21,13 +27,24 @@ public class HomeActivity extends AppCompatActivity
     private LinearLayout libraryLL;
     private LinearLayout ebookLL;
 
+    private TextToSpeech myTTS;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_home );
         Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
         taskLL = findViewById( R.id.taskLL );
+        libraryLL = findViewById( R.id.libraryLL );
         setSupportActionBar( toolbar );
+        myTTS = new TextToSpeech( getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    myTTS.setLanguage( Locale.UK);
+                }
+            }
+        } );
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById( R.id.fab );
 //        fab.setOnClickListener( new View.OnClickListener() {
@@ -73,9 +90,9 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected( item );
     }
@@ -110,5 +127,16 @@ public class HomeActivity extends AppCompatActivity
         startActivity( new Intent( HomeActivity.this,TaskListActivity.class ) );
 
 
+    }
+
+    public void testToSpeech(View view) {
+
+        String toSpeak = "You have a meeting";
+        Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
+        myTTS.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+    public void goToLibraryActivity(View view) {
+        startActivity( new Intent( HomeActivity.this,LibraryActivity.class ) );
     }
 }

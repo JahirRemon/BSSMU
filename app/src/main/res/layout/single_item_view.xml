@@ -3,6 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="50dp"
               android:orientation="horizontal"
+              android:id="@+id/singleListLL"
     android:layout_margin="10dp">
     <LinearLayout
         android:layout_width="0dp"
@@ -29,6 +30,13 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:text="Time"/>
+
+    <ImageView
+        android:id="@+id/playSound"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:src="@drawable/ic_play_circle_outline_black_24dp"/>
 
 
 

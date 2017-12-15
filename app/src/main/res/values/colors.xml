@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="textColorBlack">#000000</color>
     <color name="textColorWhite">#ffffff</color>
+    <color name="toDayColor">#baa6fc</color>
 </resources>
