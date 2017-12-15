@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.util.Log;
 
 
 import static android.support.v4.content.WakefulBroadcastReceiver.startWakefulService;
@@ -20,6 +21,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         //this will sound the alarm tone
         //this will sound the alarm once, if you wish to
         //raise alarm in loop continuously then use MediaPlayer and setLooping(true)
+//        String id = intent.getStringExtra( "taskID" );
+        long taskTime = intent.getExtras().getLong( "taskTime" );
+        Log.d( "receiver ", "onReceive: "+String.valueOf( taskTime ) );
         Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         if (alarmUri == null) {
             alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

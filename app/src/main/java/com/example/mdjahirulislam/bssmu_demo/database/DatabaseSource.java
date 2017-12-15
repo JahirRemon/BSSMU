@@ -92,7 +92,7 @@ public class DatabaseSource {
         this.open();
         /*Cursor cursor = sqLiteDatabase.rawQuery("select * from "+DatabaseHelper.TABLE_USER_DETAILS,null);*/
 
-        String myOrder = DatabaseHelper.COL_TASK_ID+" DESC";
+        String myOrder = DatabaseHelper.COL_TASK_TIME+" ASC";
 
 //        Cursor cursor = sqLiteDatabase.query(DatabaseHelper.TABLE_AD_POST, null, null, null, null, null, myOrder, null);
         Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+DatabaseHelper.TABLE_USER_TASK+" WHERE "+DatabaseHelper.COL_TASK_USER_ID+" = "+userId +" ORDER BY "+myOrder,null);
@@ -123,6 +123,43 @@ public class DatabaseSource {
         cursor.close();
         this.close();
         return taskModelArrayList;
+
+    }
+
+
+    public TaskModel getSingleTask(String taskTime) {
+        TaskModel taskModel = new TaskModel(  );
+        this.open();
+        /*Cursor cursor = sqLiteDatabase.rawQuery("select * from "+DatabaseHelper.TABLE_USER_DETAILS,null);*/
+
+//        String myOrder = DatabaseHelper.COL_TASK_TIME+" ASC";
+
+//        Cursor cursor = sqLiteDatabase.query(DatabaseHelper.TABLE_AD_POST, null, null, null, null, null, myOrder, null);
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+DatabaseHelper.TABLE_USER_TASK+" WHERE "+DatabaseHelper.COL_TASK_TIME+" = "+taskTime +" ;",null);
+        cursor.moveToFirst();
+        if (cursor != null && cursor.getCount() > 0) {
+                int taskID = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COL_TASK_ID));
+                String userUniqueId = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_USER_ID));
+                String taskTitle = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_TITLE));
+                String taskLocation = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_LOCATION));
+                String taskPriority = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_PRIORITY));
+                String taskDescription = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_DESCRIPTION));
+                String taskCreatedAt = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_CREATED_AT));
+
+
+//                travelEventModel = new MedicalHistoryModel(id,dr_id,prescription,name,details,date);
+//                Log.d(TAG, "getMyAllPost ----- Post unique id-------" + postUniqueId);
+//                Log.d(TAG, "getMyAllPost ----- Post Name-------" + postTitle);
+
+                taskModel = new TaskModel( userUniqueId, taskTitle, taskLocation, Long.parseLong( taskTime ),
+                        Integer.parseInt( taskPriority), taskDescription, Long.parseLong( taskCreatedAt));
+
+                cursor.moveToNext();
+
+        }
+        cursor.close();
+        this.close();
+        return taskModel;
 
     }
 

@@ -1,10 +1,12 @@
 package com.example.mdjahirulislam.bssmu_demo.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -45,7 +47,9 @@ public class CustomBookAdapter extends ArrayAdapter<BookItem> {
         TextView tvAuthor = (TextView) convertView.findViewById( R.id.author_name );
         TextView tvEdition = (TextView) convertView.findViewById( R.id.edition );
         TextView tvCategory = (TextView) convertView.findViewById( R.id.category );
-        TextView tvStatus = (TextView) convertView.findViewById( R.id.status );
+//        TextView tvStatus = (TextView) convertView.findViewById( R.id.status );
+        ImageView ivUrl = (ImageView) convertView.findViewById( R.id.eBookStatusIV );
+        ImageView ivUBookrl = (ImageView) convertView.findViewById( R.id.bookImageIV );
 //        LinearLayout mainLL = (LinearLayout) convertView.findViewById( R.id.singleListLL );
         // Populate the data into the template view using the data object
 //        calendar.setTimeInMillis( bookItem.getTaskTime() );
@@ -53,7 +57,20 @@ public class CustomBookAdapter extends ArrayAdapter<BookItem> {
         tvAuthor.setText( bookItem.getAuthorName() );
         tvEdition.setText( bookItem.getEdition() );
         tvCategory.setText( bookItem.getCategory() );
-        tvStatus.setText( bookItem.getE_bookStatus() );
+//        tvStatus.setText( bookItem.getE_bookStatus() );
+        if (bookItem.getPath() == 0){
+            ivUBookrl.setImageResource( R.drawable.booknocoverimage );
+        }else {
+            ivUBookrl.setImageResource( bookItem.getPath() );
+        }
+
+        Log.d( "book_adapter", "getView: "+bookItem.getPath() );
+        if (bookItem.getE_bookStatus().equals( "Available" )){
+            ivUrl.setImageResource( R.drawable.confirm );
+        }else {
+            ivUrl.setImageResource( R.drawable.not_confirm_border );
+        }
+
 
 //        if (Utilities.isItToday( calendar.getTimeInMillis() )){
 //            mainLL.setBackgroundColor( context.getResources().getColor( R.color.toDayColor ) );

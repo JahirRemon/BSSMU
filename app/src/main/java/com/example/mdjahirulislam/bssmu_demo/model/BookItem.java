@@ -13,9 +13,17 @@ public class BookItem {
     public String edition;
     public String category;
     public String e_bookStatus;
+    public int path;
 
 
-
+    public BookItem(String bookName, String authorName, String edition, String category, String e_bookStatus, int path) {
+        this.bookName = bookName;
+        this.authorName = authorName;
+        this.edition = edition;
+        this.category = category;
+        this.e_bookStatus = e_bookStatus;
+        this.path = path;
+    }
 
     public BookItem(String bookName, String authorName, String edition, String category, String ebookStatus) {
         this.bookName = bookName;
@@ -63,6 +71,14 @@ public class BookItem {
 
     public void setE_bookStatus(String e_bookStatus) {
         this.e_bookStatus = e_bookStatus;
+    }
+
+    public int getPath() {
+        return path;
+    }
+
+    public void setPath(int path) {
+        this.path = path;
     }
 
     @Override

@@ -1,44 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="50dp"
-              android:orientation="horizontal"
               android:id="@+id/singleListLL"
-    android:layout_margin="10dp">
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_weight="4"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/taskNameTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="Name"/>
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_margin="0dp"
+              android:orientation="vertical"
+    android:background="@drawable/home_item_background">
 
-        <TextView
-            android:id="@+id/taskLocationTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="HomeTown"/>
-    </LinearLayout>
+
     <TextView
-        android:id="@+id/taskTimeTV"
-        android:layout_width="0dp"
-        android:layout_weight="2"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:text="Time"/>
+        android:id="@+id/toDay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:textColor="@color/textColorWhite"
+        android:background="@color/colorPrimary"/>
 
-    <ImageView
-        android:id="@+id/playSound"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:src="@drawable/ic_play_circle_outline_black_24dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/taskNameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textColor="@color/textColorBlack"
+                android:textSize="18sp"/>
 
+            <TextView
+                android:id="@+id/taskDescriptionTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:textColor="@color/textColorBlack"
+                />
+
+            <TextView
+                android:id="@+id/taskLocationTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:textColor="@color/textColorBlack"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/taskPriorityTV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:text="Priority"
+                android:textColor="@color/textColorBlack"
+                />
+
+            <TextView
+                android:id="@+id/taskTimeTV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:text="Time"
+                android:textColor="@color/textColorBlack"
+                />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/playSound"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/ic_play_circle_outline_black_24dp"/>
+    </LinearLayout>
 
 </LinearLayout>

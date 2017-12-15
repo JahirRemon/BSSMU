@@ -24,10 +24,7 @@ public class TaskModel {
         this.createdAt = createdAt;
     }
 
-    public TaskModel(String taskName, String taskLocation, long taskTime) {
-        this.taskName = taskName;
-        this.taskLocation = taskLocation;
-        this.taskTime = taskTime;
+    public TaskModel() {
     }
 
     public String getTaskUserID() {

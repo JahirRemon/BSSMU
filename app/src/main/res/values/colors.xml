@@ -6,4 +6,7 @@
     <color name="textColorBlack">#000000</color>
     <color name="textColorWhite">#ffffff</color>
     <color name="toDayColor">#baa6fc</color>
+    <color name="priorityHighColor">#ff0900</color>
+    <color name="priorityNormalColor">#58c750</color>
+    <color name="priorityLowColor">#bf7d3a</color>
 </resources>

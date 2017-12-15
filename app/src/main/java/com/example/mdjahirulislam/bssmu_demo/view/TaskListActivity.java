@@ -189,9 +189,12 @@ public class TaskListActivity extends AppCompatActivity {
 
                                     }
                                 }, mHour, mMinute, false);
+//                        timePickerDialog.getCurrentFocus().
                         timePickerDialog.show();
                     }
                 },year,month,date);
+//                datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+                datePickerDialog.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis());
                 datePickerDialog.show();
 
 

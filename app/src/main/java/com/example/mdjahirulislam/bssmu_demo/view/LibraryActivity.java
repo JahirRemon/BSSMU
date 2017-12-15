@@ -139,17 +139,17 @@ public class LibraryActivity extends AppCompatActivity {
     public ArrayList<BookItem> getBookItems() {
         ArrayList<BookItem> arrayList = new ArrayList<>();
 
-        arrayList.add(new BookItem("tThe Immortal Life of Henrietta Lacks ","Rebecca Skloot ",
-                "6th edition","terminology","Available"));
+        arrayList.add(new BookItem("The Immortal Life of Henrietta Lacks ","Rebecca Skloot ",
+                "6th edition","terminology","Available",R.drawable.images_2));
 
-        arrayList.add(new BookItem("tStiff: The Curious Lives of Human Cadavers","Mary Roach ",
-                "9th edition","terminology","Available"));
+        arrayList.add(new BookItem("Stiff: The Curious Lives of Human Cadavers","Mary Roach ",
+                "9th edition","terminology","Available",R.drawable.images_3));
 
         arrayList.add(new BookItem("Complications: A Surgeon's Notes on an Imperfect Science ","Atul Gawande",
-                "11th edition","terminology","Not Available"));
+                "11th edition","terminology","Not Available",R.drawable.images_4));
 
         arrayList.add(new BookItem("The Emperor of All Maladies: A Biography of Cancer ","Siddhartha Mukherjee ",
-                "8th edition","Cancer","Not Available"));
+                "8th edition","Cancer","Not Available",R.drawable.images_5));
 
         arrayList.add(new BookItem("Medical Terminology - A Body Systems Approach","Barbara Gylys & F A Davis",
                 "6th edition","terminology","Available"));

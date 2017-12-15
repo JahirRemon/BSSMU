@@ -29,11 +29,7 @@
             </meta-data>
         </activity>
 
-        <service
-            android:name=".service.AlarmService"
-            android:enabled="true"
-            android:exported="true">
-        </service>
+
 
         <receiver
             android:name=".service.DeviceBootReceiver"
@@ -56,6 +52,11 @@
             android:enabled="true"
             android:exported="true">
         </receiver>
+        <service
+            android:name=".service.AlarmService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
         <receiver
             android:name=".service.StopAlarmReceiver"
             android:enabled="true"
