@@ -102,31 +102,45 @@ public class LibraryActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                Log.d( "remon", "onQueryTextSubmit: " +query);
 
-                LibraryActivity.this.customBookAdapter.getFilter().filter(query);
-                Toast.makeText(LibraryActivity.this, ""+query, Toast.LENGTH_SHORT).show();
+                ArrayList<BookItem> resultList = new ArrayList<>(  );
+                for (BookItem bookItem :
+                        getBookItems()) {
+                    if (query.toLowerCase().equals( bookItem.getCategory().toLowerCase() )){
+                        resultList.add( bookItem );
+                    }
+
+                }
+
+                if (resultList.size()>0){
+                    customBookAdapter = new CustomBookAdapter( LibraryActivity.this,resultList );
+                    bookLV.setAdapter( customBookAdapter );
+                }
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText != null & !newText.isEmpty()){
-                    Toast.makeText(LibraryActivity.this, ""+newText, Toast.LENGTH_SHORT).show();
+                    Log.d( "remon", "onQueryTextChange: "+newText );
 
-                    Toast.makeText( LibraryActivity.this, newText, Toast.LENGTH_SHORT ).show();
+//                    Toast.makeText( LibraryActivity.this, newText, Toast.LENGTH_SHORT ).show();
                     ArrayList<BookItem> bookResult = new ArrayList<>(  );
                     for (BookItem book :
                             getBookItems()) {
 
-                        if (book.bookName.contains( newText ) || book.authorName.contains( newText )){
+                        if (book.bookName.contains( newText ) ){
 
-                            Log.d( "remon", "onQueryTextChange: "+newText );
+
                             bookResult.add( book );
                         }
                     }
                     customBookAdapter = new CustomBookAdapter( LibraryActivity.this,bookResult );
                     bookLV.setAdapter( customBookAdapter );
+                }else {
+                    Log.d( "adp", "onQueryTextChange: " );
+                    bookLV.deferNotifyDataSetChanged();
                 }
 
                 return false;

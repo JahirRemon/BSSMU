@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.mdjahirulislam.bssmu_demo.R;
+import com.example.mdjahirulislam.bssmu_demo.database.AppData;
+import com.example.mdjahirulislam.bssmu_demo.database.DatabaseSource;
 
 import java.util.Locale;
 
@@ -26,6 +28,8 @@ public class HomeActivity extends AppCompatActivity
     private LinearLayout taskLL;
     private LinearLayout libraryLL;
     private LinearLayout ebookLL;
+    private AppData appData;
+    private DatabaseSource db;
 
     private TextToSpeech myTTS;
 
@@ -37,11 +41,15 @@ public class HomeActivity extends AppCompatActivity
         taskLL = findViewById( R.id.taskLL );
         libraryLL = findViewById( R.id.libraryLL );
         setSupportActionBar( toolbar );
+        db = new DatabaseSource( this );
+        appData = new AppData( this );
         myTTS = new TextToSpeech( getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
                 if(status != TextToSpeech.ERROR) {
                     myTTS.setLanguage( Locale.UK);
+                    myTTS.setPitch(  .6f );
+                    myTTS.setSpeechRate( .9f );
                 }
             }
         } );
@@ -89,10 +97,14 @@ public class HomeActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+//        noinspection SimplifiableIfStatement
+        if (id == R.id.logOut) {
+            if (appData.logout()){
+                boolean status = db.whenLogoutUser();
+                startActivity( new Intent( HomeActivity.this, LoginActivity.class ) );
+            }
+            return true;
+        }
 
         return super.onOptionsItemSelected( item );
     }
@@ -124,14 +136,14 @@ public class HomeActivity extends AppCompatActivity
 
     public void goToTaskActivity(View view) {
 
-        startActivity( new Intent( HomeActivity.this,TaskListActivity.class ) );
+        startActivity( new Intent( HomeActivity.this,LoginActivity.class ) );
 
 
     }
 
     public void testToSpeech(View view) {
 
-        String toSpeak = "You have a meeting";
+        String toSpeak = "you touch on appointment section that is under construction ";
         Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
         myTTS.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
     }

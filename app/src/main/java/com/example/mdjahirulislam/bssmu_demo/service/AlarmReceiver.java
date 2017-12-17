@@ -34,7 +34,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         //this will send a notification message
         ComponentName comp = new ComponentName(context.getPackageName(),
                 AlarmService.class.getName());
-        startWakefulService(context, (intent.setComponent(comp)));
+//        context.startService( new Intent(context,AlarmService.class).putExtra( "taskTime" ,taskTime) );
+
+        startWakefulService(context,new Intent(context,AlarmService.class).putExtra( "taskTime" ,taskTime));
         setResultCode( Activity.RESULT_OK);
     }
 }

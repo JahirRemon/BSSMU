@@ -26,11 +26,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_USER_ID = "user_id";
     public static final String COL_USER_UNIQUE_ID = "user_unique_id";
     public static final String COL_USER_FULL_NAME = "user_full_name";
-    public static final String COL_USER_MOBILE_NO = "user_mobile_no";
+    public static final String COL_USER_NAME = "user_name";
+    public static final String COL_USER_PASSWORD = "user_password";
+    public static final String COL_USER_AVATAR = "user_avatar";
     public static final String COL_USER_EMAIL = "user_email";
-    public static final String COL_USER_CREATED_AT = "user_created_at";
+    public static final String COL_USER_ROLE = "role";
+    public static final String COL_USER_DOCTOR_ID = "doctors_id";
 
     public static final String COL_TASK_ID = "task_id";
+    public static final String COL_TASK_UNIQUE_ID = "task_unique_id";
     public static final String COL_TASK_USER_ID = "task_user_id";
     public static final String COL_TASK_TITLE = "task_title";
     public static final String COL_TASK_LOCATION = "task_location";
@@ -38,6 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_TASK_PRIORITY = "task_priority";
     public static final String COL_TASK_DESCRIPTION = "task_description";
     public static final String COL_TASK_CREATED_AT = "task_created_at";
+    public static final String COL_TASK_CREATOR_ID = "task_creator_id";
 
 
     public static final String KEY_SET_ALARM_ID = "set_alarm_id";
@@ -51,19 +56,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COL_USER_ID +" integer primary key, "+
             COL_USER_UNIQUE_ID +" integer, "+
             COL_USER_FULL_NAME +" text, "+
-            COL_USER_MOBILE_NO +" text, "+
+            COL_USER_NAME +" text, "+
+            COL_USER_PASSWORD +" text, "+
+            COL_USER_AVATAR +" text, "+
             COL_USER_EMAIL +" text, "+
-            COL_USER_CREATED_AT +" text);";
+            COL_USER_ROLE +" text, "+
+            COL_USER_DOCTOR_ID +" text);";
 
     public static final String CREATE_USER_TASK_TABLE = "create table "+ TABLE_USER_TASK +"("+
-            COL_TASK_ID +" integer primary key, "+
+            COL_TASK_ID +" integer , "+
+            COL_TASK_UNIQUE_ID +" integer primary key, "+
             COL_TASK_USER_ID +" integer, "+
             COL_TASK_TITLE +" text, "+
             COL_TASK_LOCATION +" text, "+
             COL_TASK_TIME +" text, "+
             COL_TASK_PRIORITY +" text, "+
             COL_TASK_DESCRIPTION +" text, "+
-            COL_TASK_CREATED_AT +" text);";
+            COL_TASK_CREATED_AT +" text, "+
+            COL_TASK_CREATOR_ID +" text);";
 
     public static final String CREATE_SET_ALARM_TABLE = "CREATE TABLE " + TABLE_SET_ALARM + "("
             + KEY_SET_ALARM_ID + " TEXT UNIQUE,"

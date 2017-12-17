@@ -40,7 +40,7 @@ public class AlarmService extends IntentService {
     }
 
     @Override
-    public void onHandleIntent(Intent intent) {
+    public void onHandleIntent(final Intent intent) {
         db = new DatabaseSource( getApplicationContext() );
         taskModel = new TaskModel(  );
         simpleDateFormatForPlaySound = new SimpleDateFormat("hh:mm a");
@@ -51,20 +51,23 @@ public class AlarmService extends IntentService {
                     myTTS.setLanguage( Locale.UK );
                     myTTS.setPitch( 1.0f );
                     myTTS.setSpeechRate( .8f );
+                    long taskTime = intent.getExtras().getLong( "taskTime" );
+                    Log.d( "service ", "onHandleIntent: " +String.valueOf( taskTime ));
+                    taskModel = db.getSingleTask( String.valueOf( taskTime ) );
+                    msg  = "Sir you have a "+ taskModel.getTaskName()+ " Location at "+taskModel.getTaskLocation()
+                            +" on "+ simpleDateFormatForPlaySound.format( taskModel.getTaskTime());
                     myTTS.speak( msg, TextToSpeech.QUEUE_FLUSH, null );
+                    Log.d( "textToSpeech - if", "onInit: " +String.valueOf( status ));
+                    sendNotification(msg);
                 }else {
-                    Log.d( "service ", "onInit: " +String.valueOf( status ));
+                    Log.d( "textToSpeech - else", "onInit: " +String.valueOf( status ));
                 }
             }
         } );
-        long taskTime = intent.getExtras().getLong( "taskTime" );
 
-        taskModel = db.getSingleTask( String.valueOf( taskTime ) );
-        msg  = "Sir you have a "+ taskModel.getTaskName()+ " Location at "+taskModel.getTaskLocation()
-                +" on "+ simpleDateFormatForPlaySound.format( taskModel.getTaskTime());
 
-        Log.d( "service ", "onHandleIntent: " +String.valueOf( taskTime ));
-        sendNotification(msg);
+
+
 
     }
 

@@ -11,45 +11,53 @@
     <TextView
         android:id="@+id/toDay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:visibility="gone"
-        android:layout_margin="10dp"
         android:gravity="center"
+        android:textStyle="bold"
         android:textColor="@color/textColorWhite"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/toDayColor"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:orientation="horizontal"
-        android:layout_margin="10dp">
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
+            android:layout_marginRight="5dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/taskNameTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:text="Name"
+                android:textStyle="bold"
                 android:textColor="@color/textColorBlack"
                 android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/taskDescriptionTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:text="Description"
                 android:textColor="@color/textColorBlack"
                 />
 
             <TextView
                 android:id="@+id/taskLocationTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:text="Location"
                 android:textColor="@color/textColorBlack"
                 />
@@ -64,22 +72,36 @@
             <TextView
                 android:id="@+id/taskPriorityTV"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center_vertical"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:text="Priority"
-                android:textColor="@color/textColorBlack"
+                android:textColor="@color/textColorWhite"
                 />
-
-            <TextView
-                android:id="@+id/taskTimeTV"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center_vertical"
-                android:text="Time"
-                android:textColor="@color/textColorBlack"
-                />
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:layout_height="match_parent"
+                    android:padding="3dp"
+                    android:src="@drawable/circular_clock"/>
+                <TextView
+                    android:id="@+id/taskTimeTV"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:text="Time"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/textColorBlack"
+                    />
+            </LinearLayout>
+
         </LinearLayout>
 
         <ImageView
@@ -87,7 +109,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_play_circle_outline_black_24dp"/>
+            android:padding="9dp"
+            android:src="@drawable/play_button"/>
     </LinearLayout>
 
 </LinearLayout>

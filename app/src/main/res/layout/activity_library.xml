@@ -10,9 +10,13 @@
 
 
     <Spinner
-        android:id="@+id/spinner"
         android:layout_width="match_parent"
-        android:layout_height="40dp" />
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:padding="12dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        android:popupBackground="@drawable/home_item_background"/>
 
 
 

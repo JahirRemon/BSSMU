@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#53c0c6</color>
+    <color name="colorPrimaryDark">#48a7ac</color>
     <color name="colorAccent">#FF4081</color>
     <color name="textColorBlack">#000000</color>
     <color name="textColorWhite">#ffffff</color>
-    <color name="toDayColor">#baa6fc</color>
-    <color name="priorityHighColor">#ff0900</color>
-    <color name="priorityNormalColor">#58c750</color>
-    <color name="priorityLowColor">#bf7d3a</color>
+    <color name="toDayColor">#00adef</color>
+    <color name="toDayBackgroundColor">#73cbec</color>
+    <color name="priorityHighColor">#d9534f</color>
+    <color name="priorityNormalColor">#5cb85c</color>
+    <color name="priorityLowColor">#f0ad4e</color>
 </resources>

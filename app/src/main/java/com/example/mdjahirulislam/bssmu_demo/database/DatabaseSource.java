@@ -12,6 +12,7 @@ import com.example.mdjahirulislam.bssmu_demo.model.TaskModel;
 import com.example.mdjahirulislam.bssmu_demo.model.UserModel;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 /**
@@ -49,9 +50,12 @@ public class DatabaseSource {
 
         values.put(DatabaseHelper.COL_USER_UNIQUE_ID, userModel.getUser_unique_id());
         values.put(DatabaseHelper.COL_USER_FULL_NAME, userModel.getUser_full_name());
-        values.put(DatabaseHelper.COL_USER_MOBILE_NO, userModel.getUser_mobile_no());
+        values.put(DatabaseHelper.COL_USER_NAME, userModel.getUser_name());
+        values.put(DatabaseHelper.COL_USER_PASSWORD, userModel.getPassword());
+        values.put(DatabaseHelper.COL_USER_AVATAR, userModel.getUser_avatar());
         values.put(DatabaseHelper.COL_USER_EMAIL, userModel.getUser_email());
-        values.put(DatabaseHelper.COL_USER_CREATED_AT, userModel.getCreated_at());
+        values.put(DatabaseHelper.COL_USER_ROLE, userModel.getRole());
+        values.put(DatabaseHelper.COL_USER_DOCTOR_ID, userModel.getDoctor_id());
 
 
         long id = sqLiteDatabase.insert(DatabaseHelper.TABLE_USER_DETAILS, null, values);
@@ -68,6 +72,7 @@ public class DatabaseSource {
         this.open();
         ContentValues values = new ContentValues();
 
+        values.put(DatabaseHelper.COL_TASK_UNIQUE_ID, taskModel.getTaskId());
         values.put(DatabaseHelper.COL_TASK_USER_ID, taskModel.getTaskUserID());
         values.put(DatabaseHelper.COL_TASK_TITLE, taskModel.getTaskName());
         values.put(DatabaseHelper.COL_TASK_LOCATION, taskModel.getTaskLocation());
@@ -75,6 +80,7 @@ public class DatabaseSource {
         values.put(DatabaseHelper.COL_TASK_PRIORITY, taskModel.getPriority());
         values.put(DatabaseHelper.COL_TASK_DESCRIPTION, taskModel.getDescription());
         values.put(DatabaseHelper.COL_TASK_CREATED_AT, taskModel.getCreatedAt());
+        values.put(DatabaseHelper.COL_TASK_CREATOR_ID, taskModel.getCreator_id());
 
 
         long id = sqLiteDatabase.insert(DatabaseHelper.TABLE_USER_TASK, null, values);
@@ -84,6 +90,30 @@ public class DatabaseSource {
         } else {
             return false;
         }
+    }
+
+    public UserModel getUser(String userID){
+        UserModel userModel = new UserModel(  );
+        this.open();
+        Cursor cursor = sqLiteDatabase.rawQuery( "SELECT * FROM " + DatabaseHelper.TABLE_USER_DETAILS +" WHERE " + DatabaseHelper.COL_USER_UNIQUE_ID +" = " + userID,null );
+
+        cursor.moveToFirst();
+        if (cursor != null && cursor.getCount()>0){
+
+            String fullName = cursor.getString( cursor.getColumnIndex( DatabaseHelper.COL_USER_FULL_NAME ) );
+            String name  = cursor.getString( cursor.getColumnIndex( DatabaseHelper.COL_USER_NAME ) );
+            String password = cursor.getString( cursor.getColumnIndex( DatabaseHelper.COL_USER_PASSWORD ) );
+            String avatar = cursor.getString( cursor.getColumnIndex( DatabaseHelper.COL_USER_AVATAR ) );
+            String email = cursor.getString( cursor.getColumnIndex( DatabaseHelper.COL_USER_EMAIL ) );
+            String role = cursor.getString( cursor.getColumnIndex( DatabaseHelper.COL_USER_ROLE ) );
+            String doctorId = cursor.getString( cursor.getColumnIndex( DatabaseHelper.COL_USER_DOCTOR_ID ) );
+
+            userModel = new UserModel( userID,fullName, name,avatar,email,password,role,doctorId);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        this.close();
+        return userModel;
     }
 
 
@@ -100,6 +130,7 @@ public class DatabaseSource {
         if (cursor != null && cursor.getCount() > 0) {
             for (int i = 0; i < cursor.getCount(); i++) {
                 int taskID = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COL_TASK_ID));
+                String taskUniqueId = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_UNIQUE_ID));
                 String userUniqueId = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_USER_ID));
                 String taskTitle = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_TITLE));
                 String taskLocation = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_LOCATION));
@@ -107,14 +138,15 @@ public class DatabaseSource {
                 String taskPriority = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_PRIORITY));
                 String taskDescription = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_DESCRIPTION));
                 String taskCreatedAt = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_CREATED_AT));
+                String taskCreatorId = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_CREATOR_ID));
 
 
 //                travelEventModel = new MedicalHistoryModel(id,dr_id,prescription,name,details,date);
 //                Log.d(TAG, "getMyAllPost ----- Post unique id-------" + postUniqueId);
 //                Log.d(TAG, "getMyAllPost ----- Post Name-------" + postTitle);
 
-                taskModel = new TaskModel( userUniqueId, taskTitle, taskLocation, Long.parseLong( taskTime ),
-                        Integer.parseInt( taskPriority), taskDescription, Long.parseLong( taskCreatedAt));
+                taskModel = new TaskModel( taskUniqueId,userUniqueId, taskTitle, taskLocation, Long.parseLong( taskTime ),
+                        Integer.parseInt( taskPriority), taskDescription, Long.parseLong( taskCreatedAt),taskCreatorId);
 
                 taskModelArrayList.add(taskModel);
                 cursor.moveToNext();
@@ -139,20 +171,22 @@ public class DatabaseSource {
         cursor.moveToFirst();
         if (cursor != null && cursor.getCount() > 0) {
                 int taskID = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COL_TASK_ID));
+                String taskUniqueId = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_UNIQUE_ID));
                 String userUniqueId = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_USER_ID));
                 String taskTitle = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_TITLE));
                 String taskLocation = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_LOCATION));
                 String taskPriority = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_PRIORITY));
                 String taskDescription = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_DESCRIPTION));
                 String taskCreatedAt = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_CREATED_AT));
+                String taskCreatorId = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_CREATOR_ID));
 
 
 //                travelEventModel = new MedicalHistoryModel(id,dr_id,prescription,name,details,date);
 //                Log.d(TAG, "getMyAllPost ----- Post unique id-------" + postUniqueId);
 //                Log.d(TAG, "getMyAllPost ----- Post Name-------" + postTitle);
 
-                taskModel = new TaskModel( userUniqueId, taskTitle, taskLocation, Long.parseLong( taskTime ),
-                        Integer.parseInt( taskPriority), taskDescription, Long.parseLong( taskCreatedAt));
+                taskModel = new TaskModel(taskUniqueId, userUniqueId, taskTitle, taskLocation, Long.parseLong( taskTime ),
+                        Integer.parseInt( taskPriority), taskDescription, Long.parseLong( taskCreatedAt),taskCreatorId);
 
                 cursor.moveToNext();
 
@@ -225,17 +259,71 @@ public class DatabaseSource {
         }
     }
 
-//    public void whenLogoutUser() {
-//        this.open();
-//        sqLiteDatabase.delete(DatabaseHelper.TABLE_USER_DETAILS, null, null);
-//        sqLiteDatabase.delete(DatabaseHelper.TABLE_AD_POST, null, null);
-//        sqLiteDatabase.delete(DatabaseHelper.TABLE_ALL_ADS_IMAGE, null, null);
-//        sqLiteDatabase.delete(DatabaseHelper.TABLE_TEMP_POST, null, null);
-//        sqLiteDatabase.delete(DatabaseHelper.TABLE_FAVOURITE_ADS, null, null);
-//
-//        this.close();
-//        Log.d(TAG, "Deleted all Table info from SQLite");
-//    }
+    public boolean deletePreviousTask(String taskId) {
+        Log.d( TAG, "deletePreviousTask: start " );
+        this.open();
+        try {
+
+            Log.d( TAG, "deletePreviousTask: enter try" );
+            long id = sqLiteDatabase.delete( DatabaseHelper.TABLE_USER_TASK,DatabaseHelper.COL_TASK_UNIQUE_ID + " = ? ", new String[]{taskId} );
+            Log.d( TAG, "deletePreviousTask: id----> "+String.valueOf( id ) );
+            this.close();
+            if (id > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }catch (SQLException e){
+            Log.d(TAG,"deletePreviousTask catch -->  "+e.toString());
+            return false;
+        }finally {
+            sqLiteDatabase.close();
+        }
+    }
+    public boolean updateDatabase(){
+        long currentDateTime = Calendar.getInstance().getTimeInMillis();
+        this.open();
+        String selectQuery = "SELECT "+ DatabaseHelper.COL_TASK_UNIQUE_ID +" FROM " + DatabaseHelper.TABLE_USER_TASK + " WHERE "+ DatabaseHelper.COL_TASK_TIME +" < "
+                +currentDateTime;
+        Log.d( TAG, "updateDatabase: Select Query -->"+selectQuery );
+        try {
+            Cursor cursor = sqLiteDatabase.rawQuery(selectQuery,null);
+            Log.d( TAG, "updateDatabase: cursor --> "+String.valueOf( cursor.getCount() ) );
+            cursor.moveToFirst();
+            if (cursor!=null && cursor.getCount() > 0) {
+
+                for (int i=0; i<cursor.getCount(); i++){
+                    String taskID = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_UNIQUE_ID));
+                    if (deletePreviousTask( taskID )){
+                        Log.d( TAG, "updateDatabase: delete task id ---> "+ taskID);
+
+                    }
+
+                    cursor.moveToNext();
+                }
+
+                return true;
+            }else {
+                Log.d( TAG, "updateDatabase: cursor else task not found"  );
+                return false;
+            }
+
+            }catch (Exception e){
+            Log.d( TAG, "updateDatabase: exception " +e.getLocalizedMessage());
+            return false;
+
+        }
+//        return false;
+    }
+
+    public boolean whenLogoutUser() {
+        this.open();
+        sqLiteDatabase.delete(DatabaseHelper.TABLE_USER_DETAILS, null, null);
+        sqLiteDatabase.delete( DatabaseHelper.TABLE_USER_TASK,null,null );
+        this.close();
+        Log.d(TAG, "Deleted all Table info from SQLite");
+        return true;
+    }
 
 
 }

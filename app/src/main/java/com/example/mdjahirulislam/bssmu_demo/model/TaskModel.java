@@ -6,6 +6,7 @@ package com.example.mdjahirulislam.bssmu_demo.model;
 
 public class TaskModel {
 
+    private String taskId;
     private String taskUserID;
     private String taskName;
     private String taskLocation;
@@ -13,8 +14,11 @@ public class TaskModel {
     private int priority;
     private String description;
     private long createdAt;
+    private String creator_id;
 
-    public TaskModel(String taskUserID, String taskName, String taskLocation, long taskTime, int priority, String description, long createdAt) {
+    public TaskModel(String taskId, String taskUserID, String taskName, String taskLocation,
+                     long taskTime, int priority, String description, long createdAt, String creator_id) {
+        this.taskId = taskId;
         this.taskUserID = taskUserID;
         this.taskName = taskName;
         this.taskLocation = taskLocation;
@@ -22,9 +26,28 @@ public class TaskModel {
         this.priority = priority;
         this.description = description;
         this.createdAt = createdAt;
+        this.creator_id = creator_id;
     }
 
+
+
     public TaskModel() {
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    public String getCreator_id() {
+        return creator_id;
+    }
+
+    public void setCreator_id(String creator_id) {
+        this.creator_id = creator_id;
     }
 
     public String getTaskUserID() {
