@@ -6,10 +6,13 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.nfc.Tag;
+import android.os.Build;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -66,7 +69,7 @@ public class TaskListActivity extends AppCompatActivity implements SwipeRefreshL
     private CustomAdapter arrayAdapter;
     private TaskModel taskModel;
     private Calendar calendar;
-    private long taskTimeInMills;
+    private long taskTimeInMills = 0 ;
     private SimpleDateFormat simpleDateFormat;
     private SimpleDateFormat simpleDateFormatForPlaySound;
 
@@ -89,6 +92,7 @@ public class TaskListActivity extends AppCompatActivity implements SwipeRefreshL
     private UserModel userModel;
     public static final String UPCOMING_TASK = "1";
     public static final String OLD_TASK = "2";
+    private Calendar minCalender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +112,8 @@ public class TaskListActivity extends AppCompatActivity implements SwipeRefreshL
         userModel = new UserModel(  );
         userModel = db.getUser( appData.getUserId() );
 
-        userNameTV.setText( "WelCome "+ userModel.getUser_full_name().toString() );
+        minCalender = Calendar.getInstance(Locale.getDefault());
+        userNameTV.setText( "Welcome, "+ userModel.getUser_full_name().toString() );
 
         try {
             myTTS = new TextToSpeech( getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -117,7 +122,7 @@ public class TaskListActivity extends AppCompatActivity implements SwipeRefreshL
                     if (status != TextToSpeech.ERROR) {
                         myTTS.setLanguage( Locale.ENGLISH );
                         myTTS.setPitch( 1.0f );
-                        myTTS.setSpeechRate( .8f );
+                        myTTS.setSpeechRate( .7f );
                     }
                 }
             } );
@@ -195,6 +200,7 @@ public class TaskListActivity extends AppCompatActivity implements SwipeRefreshL
         final int mMinute = calendar.get(Calendar.MINUTE);
 
 
+        final boolean[] allOk = new boolean[1];
 
 
         taskTimeBTN.setOnClickListener( new View.OnClickListener() {
@@ -237,7 +243,13 @@ public class TaskListActivity extends AppCompatActivity implements SwipeRefreshL
                     }
                 },year,month,date);
 //                datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
-                datePickerDialog.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis());
+                Log.d( TAG, "onClick: " +simpleDateFormat.format( minCalender.getTimeInMillis() ));
+                if (Build.VERSION.SDK_INT >= 20){
+//                    datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable( Color.TRANSPARENT));
+                    datePickerDialog.getDatePicker().setMinDate(minCalender.getTimeInMillis());
+                }
+//
+
                 datePickerDialog.show();
 
 
@@ -254,65 +266,85 @@ public class TaskListActivity extends AppCompatActivity implements SwipeRefreshL
                             public void onClick(DialogInterface dialog,int id) {
                                 // get user input and set it to result
                                 // edit text
+
                                 final RadioButton priorityBTN = promptsView.findViewById( radioPriority.getCheckedRadioButtonId() );
 
-                                final int priorityInt;
-                                String p = priorityBTN.getText().toString().trim().toLowerCase();
-                                if (p.equals( "high" )){
-                                    priorityInt = 1;
-                                }else if (p.equals( "normal" )){
-                                    priorityInt = 2;
-                                }else {
-                                    priorityInt = 3;
+                                int priorityInt = 2;
+                                String p = new String(  );
+                                try {
+                                    p = priorityBTN.getText().toString().trim().toLowerCase();
+                                    if (p.equals( "high" )){
+                                        priorityInt = 1;
+                                    }else if (p.equals( "normal" )){
+                                        priorityInt = 2;
+                                    }else {
+                                        priorityInt = 3;
+                                    }
+                                }catch (Exception e){
+
                                 }
 
-                                RequestBody name = RequestBody.create( MultipartBody.FORM, taskNameInput.getText().toString().trim() );
-                                RequestBody location = RequestBody.create( MultipartBody.FORM, taskLocationInput.getText().toString().trim() );
-                                RequestBody description = RequestBody.create( MultipartBody.FORM, taskDescription.getText().toString().trim() );
-                                RequestBody priority = RequestBody.create( MultipartBody.FORM, String.valueOf( priorityInt ) );
-                                RequestBody taskDate = RequestBody.create( MultipartBody.FORM, Utilities.dateFormation( taskTimeInMills ) );
-                                RequestBody taskTime = RequestBody.create( MultipartBody.FORM, Utilities.timeFormation( taskTimeInMills ) );
-                                RequestBody doctors_id = RequestBody.create( MultipartBody.FORM, userModel.getDoctor_id().toString().trim() );
-                                RequestBody creator_id = RequestBody.create( MultipartBody.FORM, userModel.getUser_unique_id().toString().trim() );
+                                if (taskNameInput.getText().toString().trim().isEmpty()){
+                                    taskNameInput.setError( "Required Fields" );
+                                    Log.d( TAG, "onClick: " );
+                                    Toast.makeText( TaskListActivity.this, "Please fill all filed", Toast.LENGTH_SHORT ).show();
+                                }else if (taskLocationInput.getText().toString().trim().isEmpty() ){
+                                    taskLocationInput.setError( "Required Fields" );
+                                    Toast.makeText( TaskListActivity.this, "Please fill all filed", Toast.LENGTH_SHORT ).show();
 
-                                Log.d( TAG, "onClick: \n"+taskNameInput.getText().toString().trim()+"\n"+taskLocationInput.getText().toString().trim()+"\n"+taskDescription.getText().toString().trim()+"\n"+
-                                        String.valueOf( priorityInt )+"\n"+Utilities.dateFormation( taskTimeInMills )+"\n"+Utilities.timeFormation( taskTimeInMills )+"\n"+
-                                        userModel.getDoctor_id().toString().trim()+"\n"+userModel.getUser_unique_id().toString().trim() );
+                                }else if (taskDescription.getText().toString().trim().isEmpty()){
+                                    taskDescription.setError( "Required Fields" );
+                                    Toast.makeText( TaskListActivity.this, "Please fill all filed", Toast.LENGTH_SHORT ).show();
+
+                                }else if (p.isEmpty()){
+                                    priorityBTN.setChecked( true );
+                                    Toast.makeText( TaskListActivity.this, "Please fill all filed", Toast.LENGTH_SHORT ).show();
+
+                                }else if (taskTimeInMills == 0){
+
+                                    Toast.makeText( TaskListActivity.this, "Please Select Date and Time", Toast.LENGTH_SHORT ).show();
+                                }else {
+                                    allOk[0] = true;
+
+                                    Log.d( TAG, "onClick: "+simpleDateFormat.format( taskTimeInMills )+"--------->"+taskTimeInMills );
+                                    RequestBody name = RequestBody.create( MultipartBody.FORM, taskNameInput.getText().toString().trim() );
+                                    RequestBody location = RequestBody.create( MultipartBody.FORM, taskLocationInput.getText().toString().trim() );
+                                    RequestBody description = RequestBody.create( MultipartBody.FORM, taskDescription.getText().toString().trim() );
+                                    RequestBody priority = RequestBody.create( MultipartBody.FORM, String.valueOf( priorityInt ) );
+                                    RequestBody taskDate = RequestBody.create( MultipartBody.FORM, Utilities.dateFormation( taskTimeInMills ) );
+                                    RequestBody taskTime = RequestBody.create( MultipartBody.FORM, Utilities.timeFormation( taskTimeInMills ) );
+                                    RequestBody doctors_id = RequestBody.create( MultipartBody.FORM, userModel.getDoctor_id().toString().trim() );
+                                    RequestBody creator_id = RequestBody.create( MultipartBody.FORM, userModel.getUser_unique_id().toString().trim() );
+
+                                    Log.d( TAG, "onClick: \n"+taskNameInput.getText().toString().trim()+"\n"+taskLocationInput.getText().toString().trim()+"\n"+taskDescription.getText().toString().trim()+"\n"+
+                                            String.valueOf( priorityInt )+"\n"+Utilities.dateFormation( taskTimeInMills )+"\n"+Utilities.timeFormation( taskTimeInMills )+"\n"+
+                                            userModel.getDoctor_id().toString().trim()+"\n"+userModel.getUser_unique_id().toString().trim() );
 
 
-                                Call<AddTaskResponseModel> addTask = connectionApi.addTask( name,location,description,priority,taskDate,taskTime,doctors_id,creator_id );
-                                addTask.enqueue( new Callback<AddTaskResponseModel>() {
-                                    @Override
-                                    public void onResponse(Call<AddTaskResponseModel> call, Response<AddTaskResponseModel> response) {
-                                        if (response.code()==200) {
-                                            addTaskResponseModel = response.body();
-                                            Log.d( TAG, "onResponse: ----->  "+addTaskResponseModel.toString() );
-                                            if (addTaskResponseModel.getStatus().equals( "success" )){
-                                                getTaskList(  );
-                                            }else {
-                                                Log.d( TAG, "onResponse:  else ---> "+response.code() );
+                                    Call<AddTaskResponseModel> addTask = connectionApi.addTask( name,location,description,priority,taskDate,taskTime,doctors_id,creator_id );
+                                    addTask.enqueue( new Callback<AddTaskResponseModel>() {
+                                        @Override
+                                        public void onResponse(Call<AddTaskResponseModel> call, Response<AddTaskResponseModel> response) {
+                                            if (response.code()==200) {
+                                                addTaskResponseModel = response.body();
+                                                Log.d( TAG, "onResponse: ----->  "+addTaskResponseModel.toString() );
+                                                if (addTaskResponseModel.getStatus().equals( "success" )){
+                                                    getTaskList(  );
+                                                }else {
+                                                    Log.d( TAG, "onResponse:  else ---> "+response.code() );
+                                                }
                                             }
                                         }
-                                    }
 
-                                    @Override
-                                    public void onFailure(Call<AddTaskResponseModel> call, Throwable t) {
+                                        @Override
+                                        public void onFailure(Call<AddTaskResponseModel> call, Throwable t) {
 
-                                    }
-                                } );
-//                                TaskModel taskModelOk = new TaskModel( "1",taskNameInput.getText().toString().trim(),
-//                                        taskLocationInput.getText().toString().trim(),
-//                                        taskTimeInMills,priority,taskDescription.getText().toString().trim(),System.currentTimeMillis());
-//                                db.addTask( taskModelOk );
-//                                if (!Utilities.setAlarm(TaskListActivity.this,
-//                                        taskTimeInMills,alarmId,taskId)){
-//                                    Log.d( TAG, " Today Alarm not set" );
-////                                    db.addAlarmToSetAlarmTable(String.valueOf((int)System.currentTimeMillis()),alarmId);
-//                                }
-//                                taskArrayList.add( taskModelOk );
-//                                Log.d( TAG, "onClick: "+taskModelOk.toString() );
-//                                arrayAdapter = new CustomAdapter( getApplicationContext(),taskArrayList );
-//                                taskLV.setAdapter( arrayAdapter );
+                                        }
+                                    } );
+                                }
+
+
+
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -323,10 +355,16 @@ public class TaskListActivity extends AppCompatActivity implements SwipeRefreshL
                         });
 
         // create alert dialog
+
         AlertDialog alertDialog = alertDialogBuilder.create();
 
-        // show it
         alertDialog.show();
+//        if (allOk[0]) {
+//            alertDialog.getButton( AlertDialog.BUTTON1 ).setEnabled( true );// show it
+//        }else {
+//            alertDialog.getButton( AlertDialog.BUTTON1 ).setEnabled( false );// show it
+//        }
+
 
     }
 

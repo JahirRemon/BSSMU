@@ -8,6 +8,5 @@
           app:actionViewClass="android.support.v7.widget.SearchView"/>
     <item android:id="@+id/logOut"
           android:title="Log Out"
-          android:icon="@drawable/ic_search_white_24dp"
           app:showAsAction="never"/>
 </menu>

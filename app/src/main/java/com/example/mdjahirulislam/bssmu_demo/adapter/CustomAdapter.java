@@ -2,7 +2,6 @@ package com.example.mdjahirulislam.bssmu_demo.adapter;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,10 +70,10 @@ public class CustomAdapter extends ArrayAdapter<TaskModel> {
         int priority = taskModel.getPriority();
         if (priority == 1) {
             holder.tvTaskPriority.setText( "High Priority" );
-            holder.tvTaskPriority.setBackground( context.getResources().getDrawable( R.drawable.high_prority_background ) );
+            holder.tvTaskPriority.setBackground( context.getResources().getDrawable( R.drawable.high_priority_background ) );
         } else if (priority == 2) {
             holder.tvTaskPriority.setText( "Normal Priority" );
-            holder.tvTaskPriority.setBackground( context.getResources().getDrawable( R.drawable.normal_proriry_background ) );
+            holder.tvTaskPriority.setBackground( context.getResources().getDrawable( R.drawable.normal_priority_background ) );
         } else if (priority == 3) {
             holder.tvTaskPriority.setText( "Low Priority" );
             holder.tvTaskPriority.setBackground( context.getResources().getDrawable( R.drawable.low_prority_background ) );

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#53c0c6</color>
     <color name="colorPrimaryDark">#48a7ac</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#252525</color>
     <color name="textColorBlack">#000000</color>
     <color name="textColorWhite">#ffffff</color>
     <color name="toDayColor">#00adef</color>
@@ -10,4 +10,6 @@
     <color name="priorityHighColor">#d9534f</color>
     <color name="priorityNormalColor">#5cb85c</color>
     <color name="priorityLowColor">#f0ad4e</color>
+    <color name="iconPrimaryColor">#b5ade8</color>
+
 </resources>

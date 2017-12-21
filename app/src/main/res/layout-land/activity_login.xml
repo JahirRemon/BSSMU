@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/bgtest"
+    tools:context="com.example.mdjahirulislam.bssmu_demo.view.LoginActivity">
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_margin="10dp">
+
+
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/edit_text_background_design"
+        android:layout_marginLeft="200dp"
+        android:layout_marginRight="200dp">
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:layout_height="wrap_content"
+            android:src="@drawable/user"
+            android:padding="10dp"/>
+        <EditText
+            android:id="@+id/userNameET"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:textColor="@color/textColorWhite"
+            android:background="@drawable/edit_text_background_design"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/edit_text_background_design"
+        android:layout_marginLeft="200dp"
+        android:layout_marginRight="200dp">
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:layout_height="wrap_content"
+            android:src="@drawable/key"
+            android:padding="10dp"/>
+        <EditText
+            android:id="@+id/passwordET"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:inputType="textPassword"
+            android:textColor="@color/textColorWhite"
+            android:paddingLeft="10dp"
+            android:background="@drawable/edit_text_background_design"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+
+        >
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:onClick="getLogin"
+            android:textAllCaps="false"
+            android:textColor="@color/textColorWhite"
+            android:background="@drawable/edit_text_background_design"
+
+            />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Don't have an account? Sign Up "
+            android:gravity="center"
+            android:textColor="@color/textColorWhite"/>
+
+    </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.mdjahirulislam.bssmu_demo.view;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.mdjahirulislam.bssmu_demo.R;
 import com.example.mdjahirulislam.bssmu_demo.adapter.CustomBookAdapter;
+import com.example.mdjahirulislam.bssmu_demo.helper.Utilities;
 import com.example.mdjahirulislam.bssmu_demo.model.BookItem;
 
 import java.lang.reflect.Array;
@@ -88,6 +90,19 @@ public class LibraryActivity extends AppCompatActivity {
         customBookAdapter = new CustomBookAdapter( LibraryActivity.this,getBookItems() );
         bookLV.setAdapter( customBookAdapter );
 
+        bookLV.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (getBookItems().get( i ).e_bookStatus.toString().toLowerCase().equals( "Available".toLowerCase() )){
+                    Utilities.CopyReadAssets(LibraryActivity.this);
+//                    Toast.makeText( LibraryActivity.this, " if Available", Toast.LENGTH_SHORT ).show();
+                }else {
+                    Toast.makeText( LibraryActivity.this, "E-book is not available", Toast.LENGTH_SHORT ).show();
+                }
+
+
+            }
+        } );
     }
 
 

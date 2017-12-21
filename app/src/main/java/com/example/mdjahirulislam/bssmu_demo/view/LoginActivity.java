@@ -100,8 +100,10 @@ public class LoginActivity extends AppCompatActivity {
         final String upComingTask = "1";
         if (userNameSt.isEmpty()) {
             userNameET.setError( "Required Fields" );
+            hideDialog();
         } else if (passwordSt.isEmpty()) {
             passwordET.setError( "Required Fields" );
+            hideDialog();
         } else {
             final RequestBody userName = RequestBody.create( MultipartBody.FORM, userNameSt );
             final RequestBody password = RequestBody.create( MultipartBody.FORM, passwordSt );
@@ -148,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         } catch (Throwable exception) {
                             hideDialog();
-                            Log.d( TAG, "onResponse: " + exception.getMessage().toString() );
+//                            Log.d( TAG, "onResponse: " + exception.getMessage().toString() );
                             Toast.makeText( LoginActivity.this, "User Name or Password is wrong!!!", Toast.LENGTH_LONG ).show();
                         }
 

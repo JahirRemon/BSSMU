@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/layout_root"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical"
+              android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Task Name "/>
+
+        <EditText
+            android:id="@+id/taskNameET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <requestFocus/>
+
+        </EditText>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Task Description "/>
+
+        <EditText
+            android:id="@+id/taskDescriptionET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        </EditText>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Task Location "/>
+
+        <EditText
+            android:id="@+id/taskLocationET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        </EditText>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".6"
+            android:text="Priority : "
+            android:gravity="center_vertical"
+            android:textColor="@color/textColorBlack"/>
+
+        <RadioGroup
+            android:id="@+id/radioPriority"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/highRB"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.2"
+                android:text="High"/>
+
+            <requestFocus/>
+
+            <RadioButton
+                android:id="@+id/normalRB"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:checked="true"
+                android:text="Normal"/>
+
+            <RadioButton
+                android:id="@+id/lowRB"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.2"
+                android:text="Low"/>
+
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/taskTimeBTN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task Time "
+            android:textAllCaps="false"
+            android:textColor="@color/textColorWhite"
+            android:background="@drawable/edit_text_background_design"/>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

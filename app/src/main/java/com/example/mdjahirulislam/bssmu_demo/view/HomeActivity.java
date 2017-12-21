@@ -143,12 +143,23 @@ public class HomeActivity extends AppCompatActivity
 
     public void testToSpeech(View view) {
 
-        String toSpeak = "you touch on appointment section that is under construction ";
-        Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
-        myTTS.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+        startActivity( new Intent( HomeActivity.this,AppointmentActivity.class ) );
     }
 
     public void goToLibraryActivity(View view) {
         startActivity( new Intent( HomeActivity.this,LibraryActivity.class ) );
+    }
+
+    public void gotoMeetingActivity(View view) {
+
+        startActivity( new Intent( HomeActivity.this,MeetingActivity.class ) );
+    }
+
+    public void goToOperationActivity(View view) {
+        startActivity( new Intent( HomeActivity.this,OperationActivity.class ) );
+    }
+
+    public void goToEbookActivity(View view) {
+        startActivity( new Intent( HomeActivity.this,BookReaderActivity.class ) );
     }
 }
