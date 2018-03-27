@@ -70,7 +70,7 @@ public class AppData {
 
 
     public String getUserId(){
-        return pref.getString(KEY_USER_UNIQUE_ID, null);
+        return pref.getString(KEY_USER_UNIQUE_ID, "null");
     }
 
     public boolean logout(){

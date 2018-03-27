@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -30,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -51,6 +53,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -133,7 +136,7 @@ public class TaskListActivity extends AppCompatActivity implements SwipeRefreshL
 
         Log.d( TAG, "onCreate: "+appData.getUserId() );
 
-        taskArrayList = db.getMyAllTask( appData.getUserId() );
+        taskArrayList = db.getMyAllTask( appData.getUserId());
         if (taskArrayList.size()>0) {
             arrayAdapter = new CustomAdapter( this,taskArrayList );
             taskLV.setAdapter( arrayAdapter );
@@ -179,6 +182,8 @@ public class TaskListActivity extends AppCompatActivity implements SwipeRefreshL
         final String alarmId=String.valueOf((int) System.currentTimeMillis());
         final String taskId= UUID.randomUUID().toString();
 
+        final int[] categoryNo = {0};
+
         LayoutInflater li = LayoutInflater.from(this);
         final View promptsView = li.inflate(R.layout.add_task_dialog_design, null);
 
@@ -191,6 +196,32 @@ public class TaskListActivity extends AppCompatActivity implements SwipeRefreshL
         final EditText taskLocationInput = (EditText) promptsView.findViewById(R.id.taskLocationET);
         final EditText taskDescription = (EditText) promptsView.findViewById(R.id.taskDescriptionET);
         final RadioGroup radioPriority = promptsView.findViewById( R.id.radioPriority );
+        final Spinner categorySP = promptsView.findViewById( R.id.selectTaskCategorySP );
+        List<String> list = new ArrayList<String>();
+        list.add("Select Category");
+        list.add("Appoinment");
+        list.add("Meeting");
+        list.add("Operation");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySP.setAdapter(dataAdapter);
+
+        categorySP.setOnItemSelectedListener( new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i>0){
+                    Log.d( TAG, "onItemSelected: " + adapterView.getAdapter().getItem( i ));
+                    categoryNo[0] = i;
+                    Log.d( TAG, "onItemSelected: " + categoryNo[0]);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        } );
 
         final Button taskTimeBTN = promptsView.findViewById( R.id.taskTimeBTN );
         final int year = calendar.get(Calendar.YEAR);
@@ -300,7 +331,12 @@ public class TaskListActivity extends AppCompatActivity implements SwipeRefreshL
                                     priorityBTN.setChecked( true );
                                     Toast.makeText( TaskListActivity.this, "Please fill all filed", Toast.LENGTH_SHORT ).show();
 
-                                }else if (taskTimeInMills == 0){
+                                }else if (categoryNo[0]==0){
+                                    Toast.makeText( TaskListActivity.this, "Please Select Category", Toast.LENGTH_SHORT ).show();
+                                    Log.d( TAG, "onClick: Please Select Category" );
+
+                                }
+                                else if (taskTimeInMills == 0){
 
                                     Toast.makeText( TaskListActivity.this, "Please Select Date and Time", Toast.LENGTH_SHORT ).show();
                                 }else {
@@ -315,13 +351,14 @@ public class TaskListActivity extends AppCompatActivity implements SwipeRefreshL
                                     RequestBody taskTime = RequestBody.create( MultipartBody.FORM, Utilities.timeFormation( taskTimeInMills ) );
                                     RequestBody doctors_id = RequestBody.create( MultipartBody.FORM, userModel.getDoctor_id().toString().trim() );
                                     RequestBody creator_id = RequestBody.create( MultipartBody.FORM, userModel.getUser_unique_id().toString().trim() );
+                                    RequestBody category = RequestBody.create( MultipartBody.FORM, String.valueOf( categoryNo[0] ) );
 
                                     Log.d( TAG, "onClick: \n"+taskNameInput.getText().toString().trim()+"\n"+taskLocationInput.getText().toString().trim()+"\n"+taskDescription.getText().toString().trim()+"\n"+
-                                            String.valueOf( priorityInt )+"\n"+Utilities.dateFormation( taskTimeInMills )+"\n"+Utilities.timeFormation( taskTimeInMills )+"\n"+
+                                            String.valueOf( priorityInt )+"\ncategory:  "+categoryNo[0]+"\n"+Utilities.dateFormation( taskTimeInMills )+"\n"+Utilities.timeFormation( taskTimeInMills )+"\n"+
                                             userModel.getDoctor_id().toString().trim()+"\n"+userModel.getUser_unique_id().toString().trim() );
 
 
-                                    Call<AddTaskResponseModel> addTask = connectionApi.addTask( name,location,description,priority,taskDate,taskTime,doctors_id,creator_id );
+                                    Call<AddTaskResponseModel> addTask = connectionApi.addTask( name,location,description,priority,taskDate,taskTime,doctors_id,creator_id,category );
                                     addTask.enqueue( new Callback<AddTaskResponseModel>() {
                                         @Override
                                         public void onResponse(Call<AddTaskResponseModel> call, Response<AddTaskResponseModel> response) {
@@ -401,8 +438,9 @@ public class TaskListActivity extends AppCompatActivity implements SwipeRefreshL
         final RequestBody userName = RequestBody.create( MultipartBody.FORM,appData.getUsername());
         final RequestBody password = RequestBody.create( MultipartBody.FORM,appData.getPassword());
         final RequestBody type = RequestBody.create( MultipartBody.FORM,UPCOMING_TASK);
+        final RequestBody category = RequestBody.create( MultipartBody.FORM,"");
 
-        Call<TaskResponseModel> getTask = connectionApi.getTask( userName,password,type );
+        Call<TaskResponseModel> getTask = connectionApi.getTask( userName,password,type, category );
         getTask.enqueue( new Callback<TaskResponseModel>() {
             @Override
             public void onResponse(Call<TaskResponseModel> call, Response<TaskResponseModel> response) {
@@ -427,6 +465,7 @@ public class TaskListActivity extends AppCompatActivity implements SwipeRefreshL
                                 String location = datum.getLocation().toString().trim();
                                 String description = datum.getDescription().toString().trim();
                                 String priority = datum.getPriority().toString().trim();
+                                String category = datum.getCategory().toString().trim();
                                 String taskTime = datum.getTasktime().toString().trim();
                                 String taskDate = datum.getTaskdate().toString().trim();
                                 String datetime = datum.getDatetime().toString().trim();
@@ -435,8 +474,8 @@ public class TaskListActivity extends AppCompatActivity implements SwipeRefreshL
 
                                 try {
                                     TaskModel taskModel = new TaskModel( taskId,doctors_id,taskName,location,
-                                            Utilities.stringDateTimeToMills( datetime ),Integer.parseInt( priority ),description,
-                                            Utilities.stringDateTimeToMills( created_at ),creator_id);
+                                            Utilities.stringDateTimeToMills( datetime ),Integer.parseInt( priority ),Integer.parseInt( category ),
+                                            description, Utilities.stringDateTimeToMills( created_at ),creator_id);
 //                                    Log.d( TAG, "onResponse: Convert time ---> "+ Utilities.dateFormation( Utilities.stringDateTimeToMills( datetime ) ) );
 //                                    Log.d( TAG, "onResponse: "+taskModel.toString() );
 

@@ -41,6 +41,7 @@
                     android:layout_weight="1"
                     android:text="Book Name"
                     android:textSize="16sp"
+                    android:maxLines="1"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -48,12 +49,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:maxLines="1"
                     android:text="Author Name"/>
 
                 <TextView
                     android:id="@+id/category"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:maxLines="1"
                     android:layout_weight="1"
                     android:text="Category Name"/>
 
@@ -62,6 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:maxLines="1"
                     android:text="Edition Name"/>
             </LinearLayout>
 
@@ -76,6 +80,7 @@
                     android:layout_height="0dp"
                     android:layout_weight=".5"
                     android:gravity="center"
+                    android:maxLines="1"
                     android:text="E-Book Status"/>
 
                 <ImageView

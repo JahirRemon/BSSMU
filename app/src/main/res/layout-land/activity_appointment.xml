@@ -1,223 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/home_item_background"
     tools:context="com.example.mdjahirulislam.bssmu_demo.view.AppointmentActivity">
 
-    <TextView
-        android:id="@+id/toDay"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:visibility="visible"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:text="21/12/2017"
-        android:textColor="@color/textColorWhite"
-        android:background="@color/toDayColor"/>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:orientation="horizontal"
-        android:layout_marginLeft="40dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp">
+        android:layout_height="wrap_content"
+        android:background="@drawable/home_item_background"
+        android:orientation="vertical">
+        <ListView
+            android:id="@+id/appointmentLV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/taskNameTV"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="Appointed with VC"
-                android:textStyle="bold"
-                android:textColor="@color/textColorBlack"
-                android:textSize="18sp"/>
-
-            <TextView
-                android:id="@+id/taskDescriptionTV"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".9"
-                android:text="General meeting about new necessary equipment."
-                android:textColor="@color/textColorBlack"
-                />
-
-            <TextView
-                android:id="@+id/taskLocationTV"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="Location: Meeting Room"
-                android:textColor="@color/textColorBlack"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/taskPriorityTV"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Normal Priority"
-                android:padding="3dp"
-                android:textColor="@color/textColorWhite"
-                android:background="@drawable/normal_priority_background"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight=".5"
-                    android:layout_height="match_parent"
-                    android:padding="1dp"
-                    android:src="@drawable/clock"/>
-                <TextView
-                    android:id="@+id/taskTimeTV"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:text="01:47 AM"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="2dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/textColorBlack"
-                    />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/playSound"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:padding="9dp"
-            android:src="@drawable/play_button"/>
+        </ListView>
     </LinearLayout>
 
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:visibility="visible"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:text="23/12/2017"
-        android:textColor="@color/textColorWhite"
-        android:background="@color/toDayColor"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:orientation="horizontal"
-        android:layout_marginLeft="40dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="Appointment with Prime Minister"
-                android:textStyle="bold"
-                android:textColor="@color/textColorBlack"
-                android:textSize="18sp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".9"
-                android:text="About Social Activates"
-                android:textColor="@color/textColorBlack"
-                />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="Location: Prime Minister office"
-                android:textColor="@color/textColorBlack"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="High Priority"
-                android:padding="3dp"
-                android:textColor="@color/textColorWhite"
-                android:background="@drawable/high_priority_background"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight=".5"
-                    android:layout_height="match_parent"
-                    android:padding="1dp"
-                    android:src="@drawable/clock"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:text="01:47 AM"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="2dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/textColorBlack"
-                    />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:padding="9dp"
-            android:src="@drawable/play_button"/>
-    </LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_add_white_24dp"
+        app:backgroundTint="@color/colorPrimary"
+        android:onClick="addReminder"/>
 
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

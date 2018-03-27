@@ -118,6 +118,14 @@
 
     </LinearLayout>
 
+
+    <Spinner
+        android:id="@+id/selectTaskCategorySP"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="6dp"
+        ></Spinner>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

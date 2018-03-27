@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,223 +10,37 @@
     android:background="@drawable/home_item_background">
 
 
-    <TextView
-        android:id="@+id/toDay"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:visibility="visible"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:text="21/12/2017"
-        android:textColor="@color/textColorWhite"
-        android:background="@color/toDayColor"/>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:orientation="horizontal"
-        android:layout_marginLeft="40dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp">
+        android:layout_height="wrap_content"
+        android:background="@drawable/home_item_background"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/taskNameTV"
+        <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipeRefreshMeeting"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/meetingLV"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="General Meeting"
-                android:textStyle="bold"
-                android:textColor="@color/textColorBlack"
-                android:textSize="18sp"/>
+                android:layout_height="match_parent"></ListView>
 
-            <TextView
-                android:id="@+id/taskDescriptionTV"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".9"
-                android:text="General meeting about new necessary equipment."
-                android:textColor="@color/textColorBlack"
-                />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
-            <TextView
-                android:id="@+id/taskLocationTV"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="Location: Meeting Room"
-                android:textColor="@color/textColorBlack"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/taskPriorityTV"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="High Priority"
-                android:padding="3dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:textColor="@color/textColorWhite"
-                android:background="@drawable/high_priority_background"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_marginLeft="20dp"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight=".5"
-                    android:layout_height="match_parent"
-                    android:padding="1dp"
-                    android:src="@drawable/clock"/>
-                <TextView
-                    android:id="@+id/taskTimeTV"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:text="01:47 AM"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="2dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/textColorBlack"
-                    />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/playSound"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:padding="9dp"
-            android:src="@drawable/play_button"/>
     </LinearLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:onClick="addReminder"
+        app:backgroundTint="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_add_white_24dp"/>
 
 
-
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:visibility="visible"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:text="23/12/2017"
-        android:textColor="@color/textColorWhite"
-        android:background="@color/toDayColor"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:orientation="horizontal"
-        android:layout_marginLeft="40dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="Board Meeting"
-                android:textStyle="bold"
-                android:textColor="@color/textColorBlack"
-                android:textSize="18sp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".9"
-                android:text="About new necessary equipment."
-                android:textColor="@color/textColorBlack"
-                />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="Location: Meeting Room"
-                android:textColor="@color/textColorBlack"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Low Priority"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:padding="3dp"
-                android:textColor="@color/textColorWhite"
-                android:background="@drawable/low_prority_background"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_marginLeft="20dp"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight=".5"
-                    android:layout_height="match_parent"
-                    android:padding="1dp"
-                    android:src="@drawable/clock"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:text="01:47 AM"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="2dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/textColorBlack"
-                    />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:padding="9dp"
-            android:src="@drawable/play_button"/>
-    </LinearLayout>
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

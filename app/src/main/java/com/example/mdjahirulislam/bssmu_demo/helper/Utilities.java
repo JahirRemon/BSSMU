@@ -7,12 +7,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 
 import com.example.mdjahirulislam.bssmu_demo.R;
 import com.example.mdjahirulislam.bssmu_demo.service.AlarmReceiver;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -31,7 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Utilities {
 
 
-    public static String BASE_URL = "http://doctors.com.bd/doctors/";
+    public static String BASE_URL = "https://doctors.com.bd/doctors/";
     public static Retrofit getRetrofit() {
 
         return new Retrofit.Builder()
@@ -117,18 +121,44 @@ public class Utilities {
     }
 
 
-    public static void CopyReadAssets(Context context) {
+    public static void CopyReadAssets(Context context){
         AssetManager assetManager = context.getAssets();
 
         InputStream in = null;
         OutputStream out = null;
-        File file = new File(context.getFilesDir(), "Rebecca_Skloot_The_Immortal_Life_of_Henrietta_Lack.pdf");
+
+//        File file = new File(context.getFilesDir(), "Rebecca_Skloot_The_Immortal_Life_of_Henrietta_Lack.pdf");
+        File file = new File(context.getExternalFilesDir( Environment.getExternalStorageState()), "Rebecca_Skloot_The_Immortal_Life_of_Henrietta_Lack.pdf");
+        Log.d( "remon ", "CopyReadAssets: " +file.getPath().toString());
         try
         {
+
+//            in = assetManager.open(filename);
+//            String outDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+//
+//            File outFile = new File(outDir, filename);
+//            if(outFile.createNewFile()){
+//                return;
+//            }
+//
+//            out = new FileOutputStream(outFile);
+//
+
+
             in = assetManager.open("Rebecca_Skloot_The_Immortal_Life_of_Henrietta_Lack.pdf");
-            out = context.openFileOutput(file.getName(), Context.MODE_WORLD_READABLE);
+            String outDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+            File outFile = new File(outDir, "Rebecca_Skloot_The_Immortal_Life_of_Henrietta_Lack.pdf");
+            if(outFile.createNewFile()){
+                Log.d( "if-----> ", "CopyReadAssets: " );
+                return;
+            }
+            out = new FileOutputStream(outFile);
+//            Log.d( "Tag 1", "CopyReadAssets: in ---> "+in.toString() );
+//            out = context.openFileOutput(file.getName(), Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+//            Log.d( "Tag 2", "CopyReadAssets: in ---> "+out.toString() );
 
             copyFile(in, out);
+            Log.d( "Tag 3", "CopyReadAssets: in ---> " +outFile.getPath());
             in.close();
             in = null;
             out.flush();
@@ -136,13 +166,27 @@ public class Utilities {
             out = null;
         } catch (Exception e)
         {
-            Log.e("tag", e.getMessage());
+            Log.e("tag", e.getMessage()+"----> "+e.getLocalizedMessage());
         }
 
         Intent intent = new Intent( Intent.ACTION_VIEW);
-        intent.setDataAndType(
-                Uri.parse("file://" + context.getFilesDir() + "/Rebecca_Skloot_The_Immortal_Life_of_Henrietta_Lack.pdf"),
-                "application/pdf");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Uri apkURI = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
+
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+//            Log.d( "Remon", "CopyReadAssets: " );
+//            Uri apkURI = FileProvider.getUriForFile( context,
+//                    context.getApplicationContext().getPackageName() + ".provider", file);
+            intent.setDataAndType(apkURI, "application/pdf");
+//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }else {
+            intent.setDataAndType(
+                    Uri.parse("file://" + context.getFilesDir() + "/Rebecca_Skloot_The_Immortal_Life_of_Henrietta_Lack.pdf"),
+                    "application/pdf");
+        }
+
 
 //        intent.getData();
         context.startActivity(intent);

@@ -5,6 +5,7 @@
     <color name="colorAccent">#252525</color>
     <color name="textColorBlack">#000000</color>
     <color name="textColorWhite">#ffffff</color>
+    <color name="textHintColorWhite">#cacaca</color>
     <color name="toDayColor">#00adef</color>
     <color name="toDayBackgroundColor">#73cbec</color>
     <color name="priorityHighColor">#d9534f</color>

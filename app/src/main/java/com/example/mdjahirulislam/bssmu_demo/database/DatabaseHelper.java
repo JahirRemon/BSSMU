@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "task.bd";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
 
     public static final String TABLE_USER_DETAILS = "user_registration_table";
@@ -41,6 +41,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_TASK_TIME = "task_time";
     public static final String COL_TASK_PRIORITY = "task_priority";
     public static final String COL_TASK_DESCRIPTION = "task_description";
+    public static final String COL_TASK_CATEGORY = "task_category";
     public static final String COL_TASK_CREATED_AT = "task_created_at";
     public static final String COL_TASK_CREATOR_ID = "task_creator_id";
 
@@ -72,6 +73,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COL_TASK_TIME +" text, "+
             COL_TASK_PRIORITY +" text, "+
             COL_TASK_DESCRIPTION +" text, "+
+            COL_TASK_CATEGORY +" text, "+
             COL_TASK_CREATED_AT +" text, "+
             COL_TASK_CREATOR_ID +" text);";
 

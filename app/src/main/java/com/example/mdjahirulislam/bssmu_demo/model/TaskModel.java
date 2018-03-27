@@ -12,18 +12,20 @@ public class TaskModel {
     private String taskLocation;
     private long taskTime;
     private int priority;
+    private int category;
     private String description;
     private long createdAt;
     private String creator_id;
 
     public TaskModel(String taskId, String taskUserID, String taskName, String taskLocation,
-                     long taskTime, int priority, String description, long createdAt, String creator_id) {
+                     long taskTime, int priority, int category ,String description, long createdAt, String creator_id) {
         this.taskId = taskId;
         this.taskUserID = taskUserID;
         this.taskName = taskName;
         this.taskLocation = taskLocation;
         this.taskTime = taskTime;
         this.priority = priority;
+        this.category = category;
         this.description = description;
         this.createdAt = createdAt;
         this.creator_id = creator_id;
@@ -90,6 +92,14 @@ public class TaskModel {
         this.priority = priority;
     }
 
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -102,6 +112,8 @@ public class TaskModel {
         return createdAt;
     }
 
+
+
     public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
@@ -109,13 +121,16 @@ public class TaskModel {
     @Override
     public String toString() {
         return "TaskModel{" +
-                "taskUserID='" + taskUserID + '\'' +
+                "taskId='" + taskId + '\'' +
+                ", taskUserID='" + taskUserID + '\'' +
                 ", taskName='" + taskName + '\'' +
                 ", taskLocation='" + taskLocation + '\'' +
                 ", taskTime=" + taskTime +
                 ", priority=" + priority +
+                ", category=" + category +
                 ", description='" + description + '\'' +
                 ", createdAt=" + createdAt +
+                ", creator_id='" + creator_id + '\'' +
                 '}';
     }
 }

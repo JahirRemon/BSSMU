@@ -38,6 +38,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:textColor="@color/textColorWhite"
+            android:hint="User Name"
+            android:textColorHint="@color/textColorWhite"
             android:background="@drawable/edit_text_background_design"
             />
     </LinearLayout>
@@ -60,7 +64,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@drawable/edit_text_background_design"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:textColor="@color/textColorWhite"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColorHint="@color/textColorWhite"/>
     </LinearLayout>
 
     <LinearLayout

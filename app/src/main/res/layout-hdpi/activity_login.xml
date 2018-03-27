@@ -37,7 +37,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@drawable/edit_text_background_design"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:textColor="@color/textColorWhite"
+            android:hint="User Name"
+            android:textCursorDrawable="@null"
+            android:textColorHint="@color/textHintColorWhite"
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -58,13 +64,20 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@drawable/edit_text_background_design"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:textColor="@color/textColorWhite"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textCursorDrawable="@null"
+            android:textColorHint="@color/textHintColorWhite"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
+        android:layout_marginBottom="8dp"
         android:gravity="center">
         <View
             android:layout_width="0dp"
@@ -75,6 +88,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Login"
+            android:textSize="18sp"
             android:onClick="getLogin"
             android:textAllCaps="false"
             android:textColor="@color/textColorWhite"

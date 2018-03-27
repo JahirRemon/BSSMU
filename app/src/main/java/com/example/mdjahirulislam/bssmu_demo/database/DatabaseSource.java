@@ -13,6 +13,7 @@ import com.example.mdjahirulislam.bssmu_demo.model.UserModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 
 /**
@@ -78,6 +79,7 @@ public class DatabaseSource {
         values.put(DatabaseHelper.COL_TASK_LOCATION, taskModel.getTaskLocation());
         values.put(DatabaseHelper.COL_TASK_TIME, taskModel.getTaskTime());
         values.put(DatabaseHelper.COL_TASK_PRIORITY, taskModel.getPriority());
+        values.put(DatabaseHelper.COL_TASK_CATEGORY, taskModel.getCategory());
         values.put(DatabaseHelper.COL_TASK_DESCRIPTION, taskModel.getDescription());
         values.put(DatabaseHelper.COL_TASK_CREATED_AT, taskModel.getCreatedAt());
         values.put(DatabaseHelper.COL_TASK_CREATOR_ID, taskModel.getCreator_id());
@@ -136,6 +138,7 @@ public class DatabaseSource {
                 String taskLocation = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_LOCATION));
                 String taskTime = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_TIME));
                 String taskPriority = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_PRIORITY));
+                int taskCategory = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COL_TASK_CATEGORY));
                 String taskDescription = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_DESCRIPTION));
                 String taskCreatedAt = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_CREATED_AT));
                 String taskCreatorId = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_CREATOR_ID));
@@ -146,7 +149,51 @@ public class DatabaseSource {
 //                Log.d(TAG, "getMyAllPost ----- Post Name-------" + postTitle);
 
                 taskModel = new TaskModel( taskUniqueId,userUniqueId, taskTitle, taskLocation, Long.parseLong( taskTime ),
-                        Integer.parseInt( taskPriority), taskDescription, Long.parseLong( taskCreatedAt),taskCreatorId);
+                        Integer.parseInt( taskPriority), taskCategory,  taskDescription, Long.parseLong( taskCreatedAt),taskCreatorId);
+
+                taskModelArrayList.add(taskModel);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        this.close();
+        return taskModelArrayList;
+
+    }
+
+
+
+    public ArrayList<TaskModel> getCategoryTask(String userId, String category) {
+        ArrayList<TaskModel> taskModelArrayList = new ArrayList<>();
+        this.open();
+        /*Cursor cursor = sqLiteDatabase.rawQuery("select * from "+DatabaseHelper.TABLE_USER_DETAILS,null);*/
+
+        String myOrder = DatabaseHelper.COL_TASK_TIME+" ASC";
+
+//        Cursor cursor = sqLiteDatabase.query(DatabaseHelper.TABLE_AD_POST, null, null, null, null, null, myOrder, null);
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+DatabaseHelper.TABLE_USER_TASK+" WHERE "+DatabaseHelper.COL_TASK_USER_ID+" = "+userId + " AND "+ DatabaseHelper.COL_TASK_CATEGORY+" = "+category+" ORDER BY "+myOrder,null);
+        cursor.moveToFirst();
+        if (cursor != null && cursor.getCount() > 0) {
+            for (int i = 0; i < cursor.getCount(); i++) {
+                int taskID = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COL_TASK_ID));
+                String taskUniqueId = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_UNIQUE_ID));
+                String userUniqueId = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_USER_ID));
+                String taskTitle = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_TITLE));
+                String taskLocation = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_LOCATION));
+                String taskTime = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_TIME));
+                String taskPriority = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_PRIORITY));
+                int taskCategory = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COL_TASK_CATEGORY));
+                String taskDescription = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_DESCRIPTION));
+                String taskCreatedAt = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_CREATED_AT));
+                String taskCreatorId = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_CREATOR_ID));
+
+
+//                travelEventModel = new MedicalHistoryModel(id,dr_id,prescription,name,details,date);
+//                Log.d(TAG, "getMyAllPost ----- Post unique id-------" + postUniqueId);
+//                Log.d(TAG, "getMyAllPost ----- Post Name-------" + postTitle);
+
+                taskModel = new TaskModel( taskUniqueId,userUniqueId, taskTitle, taskLocation, Long.parseLong( taskTime ),
+                        Integer.parseInt( taskPriority), taskCategory,  taskDescription, Long.parseLong( taskCreatedAt),taskCreatorId);
 
                 taskModelArrayList.add(taskModel);
                 cursor.moveToNext();
@@ -179,6 +226,7 @@ public class DatabaseSource {
                 String taskDescription = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_DESCRIPTION));
                 String taskCreatedAt = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_CREATED_AT));
                 String taskCreatorId = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_TASK_CREATOR_ID));
+                int taskCategory = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COL_TASK_CATEGORY));
 
 
 //                travelEventModel = new MedicalHistoryModel(id,dr_id,prescription,name,details,date);
@@ -186,7 +234,7 @@ public class DatabaseSource {
 //                Log.d(TAG, "getMyAllPost ----- Post Name-------" + postTitle);
 
                 taskModel = new TaskModel(taskUniqueId, userUniqueId, taskTitle, taskLocation, Long.parseLong( taskTime ),
-                        Integer.parseInt( taskPriority), taskDescription, Long.parseLong( taskCreatedAt),taskCreatorId);
+                        Integer.parseInt( taskPriority),taskCategory,  taskDescription, Long.parseLong( taskCreatedAt),taskCreatorId);
 
                 cursor.moveToNext();
 

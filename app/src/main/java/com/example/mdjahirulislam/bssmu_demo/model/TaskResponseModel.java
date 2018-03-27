@@ -57,6 +57,9 @@ public class TaskResponseModel {
         @SerializedName("priority")
         @Expose
         private Integer priority;
+        @SerializedName("category")
+        @Expose
+        private String category;
         @SerializedName("tasktime")
         @Expose
         private String tasktime;
@@ -127,6 +130,14 @@ public class TaskResponseModel {
 
         public void setPriority(Integer priority) {
             this.priority = priority;
+        }
+
+        public String getCategory() {
+            return category;
+        }
+
+        public void setCategory(String category) {
+            this.category = category;
         }
 
         public String getTasktime() {

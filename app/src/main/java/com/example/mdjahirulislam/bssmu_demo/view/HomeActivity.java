@@ -3,6 +3,7 @@ package com.example.mdjahirulislam.bssmu_demo.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,6 +25,7 @@ import java.util.Locale;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String TAG = HomeActivity.class.getSimpleName();
     private LinearLayout appintmentLL;
     private LinearLayout taskLL;
     private LinearLayout libraryLL;
@@ -53,6 +55,15 @@ public class HomeActivity extends AppCompatActivity
                 }
             }
         } );
+
+
+        if (appData.getUserId().equals( "null" )){
+            startActivity( new Intent( HomeActivity.this,LoginActivity.class ) );
+            finish();
+        }else {
+            Log.d( TAG, "onCreate: " + appData.getUserId() );
+        }
+
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById( R.id.fab );
 //        fab.setOnClickListener( new View.OnClickListener() {

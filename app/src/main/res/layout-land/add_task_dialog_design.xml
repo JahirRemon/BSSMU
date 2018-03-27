@@ -13,8 +13,9 @@
 
         <TextView
             android:id="@+id/textView1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
             android:text="Task Name "/>
 
         <EditText
@@ -34,8 +35,9 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
             android:text="Task Description "/>
 
         <EditText
@@ -54,8 +56,9 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
             android:text="Task Location "/>
 
         <EditText
@@ -80,6 +83,7 @@
             android:layout_weight=".6"
             android:text="Priority : "
             android:gravity="center_vertical"
+            android:paddingLeft="4dp"
             android:textColor="@color/textColorBlack"/>
 
         <RadioGroup
@@ -117,6 +121,13 @@
         </RadioGroup>
 
     </LinearLayout>
+
+    <Spinner
+        android:id="@+id/selectTaskCategorySP"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="6dp"
+        ></Spinner>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -108,6 +108,7 @@ public class LoginActivity extends AppCompatActivity {
             final RequestBody userName = RequestBody.create( MultipartBody.FORM, userNameSt );
             final RequestBody password = RequestBody.create( MultipartBody.FORM, passwordSt );
             final RequestBody type = RequestBody.create( MultipartBody.FORM, upComingTask );
+//            final RequestBody category = RequestBody.create( MultipartBody.FORM, "2" );
 
             Call<LoginResponseModel> getUser = connectionApi.getLogin( userName, password );
             getUser.enqueue( new Callback<LoginResponseModel>() {
@@ -140,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                                     appData.setUsername( userNameSt );
                                     appData.setPassword( passwordSt );
                                     appData.setUserId( user_unique_id );
-                                    if (getTaskList( userName, password, type )) {
+                                    if (getTaskList( userName, password, type)) {
 
                                     }
                                 }
@@ -173,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public boolean getTaskList(RequestBody userName, RequestBody password, RequestBody type) {
         final boolean[] result = {true};
-        Call<TaskResponseModel> getTask = connectionApi.getTask( userName, password, type );
+        Call<TaskResponseModel> getTask = connectionApi.getTask( userName, password, type , null);
         getTask.enqueue( new Callback<TaskResponseModel>() {
             @Override
             public void onResponse(Call<TaskResponseModel> call, Response<TaskResponseModel> response) {
@@ -198,6 +199,7 @@ public class LoginActivity extends AppCompatActivity {
                                 String location = datum.getLocation().toString().trim();
                                 String description = datum.getDescription().toString().trim();
                                 String priority = datum.getPriority().toString().trim();
+                                String category = datum.getPriority().toString().trim();
                                 String taskTime = datum.getTasktime().toString().trim();
                                 String taskDate = datum.getTaskdate().toString().trim();
                                 String datetime = datum.getDatetime().toString().trim();
@@ -206,7 +208,8 @@ public class LoginActivity extends AppCompatActivity {
 
                                 try {
                                     TaskModel taskModel = new TaskModel( taskId, doctors_id, taskName, location,
-                                            Utilities.stringDateTimeToMills( datetime ), Integer.parseInt( priority ), description,
+                                            Utilities.stringDateTimeToMills( datetime ), Integer.parseInt( priority ), Integer.parseInt( category ),
+                                            description,
                                             Utilities.stringDateTimeToMills( created_at ), creator_id );
                                     Log.d( TAG, "onResponse: Convert time ---> "+ Utilities.dateTimeFormation( Utilities.stringDateTimeToMills( datetime ) ) );
 //                                    Log.d( TAG, "onResponse: "+taskModel.toString() );
@@ -220,7 +223,7 @@ public class LoginActivity extends AppCompatActivity {
                                             Log.d( TAG, " Today Alarm not set" );
 //                                    db.addAlarmToSetAlarmTable(String.valueOf((int)System.currentTimeMillis()),alarmId);
                                         }
-                                        startActivity( new Intent( LoginActivity.this, TaskListActivity.class )
+                                        startActivity( new Intent( LoginActivity.this, HomeActivity.class )
                                                 .setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP ) );
                                         finish();
                                         result[0] = true;

@@ -32,7 +32,8 @@ public interface ConnectionApi {
     Call<TaskResponseModel> getTask(
             @Part ("username") RequestBody username,
             @Part ("password") RequestBody password,
-            @Part ("type") RequestBody type
+            @Part ("type") RequestBody type,
+            @Part ("category") RequestBody category
 
     );
 
@@ -47,8 +48,8 @@ public interface ConnectionApi {
             @Part ("taskdate") RequestBody taskdate,
             @Part ("tasktime") RequestBody tasktime,
             @Part ("doctors_id") RequestBody doctors_id,
-            @Part ("creator_id") RequestBody creator_id
-
+            @Part ("creator_id") RequestBody creator_id,
+            @Part ("category") RequestBody category
 
     );
 

@@ -40,6 +40,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="Appointment"
+                android:layout_marginBottom="6dp"
                 android:gravity="center_horizontal"
                 android:textColor="@color/textColorBlack"
                 android:textSize="20dp"/>
@@ -69,6 +70,7 @@
                 android:layout_weight="1"
                 android:text="Task"
                 android:gravity="center_horizontal"
+                android:layout_marginBottom="6dp"
                 android:textColor="@color/textColorBlack"
                 android:textSize="20dp"/>
 
@@ -105,6 +107,7 @@
                 android:layout_weight="1"
                 android:text="Meeting"
                 android:gravity="center_horizontal"
+                android:layout_marginBottom="6dp"
                 android:textColor="@color/textColorBlack"
                 android:textSize="20dp"/>
 
@@ -133,6 +136,7 @@
                 android:layout_weight="1"
                 android:text="Operation"
                 android:gravity="center_horizontal"
+                android:layout_marginBottom="6dp"
                 android:textColor="@color/textColorBlack"
                 android:textSize="20dp"/>
 
@@ -169,6 +173,7 @@
                 android:layout_weight="1"
                 android:text="Library"
                 android:gravity="center_horizontal"
+                android:layout_marginBottom="6dp"
                 android:textColor="@color/textColorBlack"
                 android:textSize="20dp"/>
 
@@ -197,6 +202,7 @@
                 android:layout_weight="1"
                 android:text="E-Book"
                 android:gravity="center_horizontal"
+                android:layout_marginBottom="6dp"
                 android:textColor="@color/textColorBlack"
                 android:textSize="20dp"/>
 

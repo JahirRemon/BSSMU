@@ -40,6 +40,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="Name"
+                android:maxLines="1"
                 android:textStyle="bold"
                 android:textColor="@color/textColorBlack"
                 android:textSize="18sp"/>
@@ -51,6 +52,7 @@
                 android:layout_weight=".9"
                 android:gravity="center_vertical"
                 android:text="Description"
+                android:maxLines="1"
                 android:textColor="@color/textColorBlack"
                 />
 
@@ -58,6 +60,7 @@
                 android:id="@+id/taskLocationTV"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:maxLines="1"
                 android:layout_weight="1"
                 android:text="Location"
                 android:textColor="@color/textColorBlack"
@@ -76,6 +79,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:maxLines="1"
                 android:text="Priority"
                 android:padding="3dp"
                 android:textColor="@color/textColorWhite"
@@ -99,6 +103,7 @@
                     android:text="Time"
                     android:gravity="center_vertical"
                     android:paddingLeft="2dp"
+                    android:maxLines="1"
                     android:textStyle="bold"
                     android:textColor="@color/textColorBlack"
                     />

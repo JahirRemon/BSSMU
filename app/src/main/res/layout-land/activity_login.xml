@@ -50,6 +50,9 @@
             android:paddingLeft="10dp"
             android:textColor="@color/textColorWhite"
             android:background="@drawable/edit_text_background_design"
+            android:hint="User Name"
+            android:textColorHint="@color/textHintColorWhite"
+            android:textCursorDrawable="@null"
             />
     </LinearLayout>
 
@@ -76,7 +79,10 @@
             android:inputType="textPassword"
             android:textColor="@color/textColorWhite"
             android:paddingLeft="10dp"
-            android:background="@drawable/edit_text_background_design"/>
+            android:background="@drawable/edit_text_background_design"
+            android:hint="User Name"
+            android:textColorHint="@color/textHintColorWhite"
+            android:textCursorDrawable="@null"/>
     </LinearLayout>
 
     <LinearLayout
@@ -84,7 +90,7 @@
         android:layout_height="50dp"
         android:orientation="horizontal"
         android:gravity="center"
-
+        android:layout_marginBottom="8dp"
         >
         <View
             android:layout_width="0dp"
