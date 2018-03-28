@@ -168,8 +168,8 @@ public class LibraryActivity extends AppCompatActivity {
     public ArrayList<BookItem> getBookItems() {
         ArrayList<BookItem> arrayList = new ArrayList<>();
 
-        arrayList.add(new BookItem("The Immortal Life of Henrietta Lacks ","Rebecca Skloot ",
-                "6th edition","terminology","Available",R.drawable.images_2));
+        arrayList.add(new BookItem("Human Anatomy - Upper Limb  &amp; Thorax (Volume 1) ","Rebecca Skloot ",
+                "6th edition","terminology","Available",R.drawable.human_anatomy));
 
         arrayList.add(new BookItem("Stiff: The Curious Lives of Human Cadavers","Mary Roach ",
                 "9th edition","terminology","Available",R.drawable.images_3));

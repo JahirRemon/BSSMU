@@ -19,7 +19,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -38,6 +37,7 @@ import com.example.mdjahirulislam.bssmu_demo.database.DatabaseSource;
 import com.example.mdjahirulislam.bssmu_demo.helper.ConnectionApi;
 import com.example.mdjahirulislam.bssmu_demo.helper.Utilities;
 import com.example.mdjahirulislam.bssmu_demo.model.AddTaskResponseModel;
+import com.example.mdjahirulislam.bssmu_demo.model.RemoveTaskResponseModel;
 import com.example.mdjahirulislam.bssmu_demo.model.TaskModel;
 import com.example.mdjahirulislam.bssmu_demo.model.TaskResponseModel;
 import com.example.mdjahirulislam.bssmu_demo.model.UserModel;
@@ -48,7 +48,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -86,8 +85,11 @@ public class OperationActivity extends AppCompatActivity implements SwipeRefresh
     private ConnectionApi connectionApi;
     private TaskResponseModel taskResponseModel;
     private AddTaskResponseModel addTaskResponseModel;
+    private RemoveTaskResponseModel removeTaskResponseModel;
     private UserModel userModel;
     public static final String UPCOMING_TASK = "1";
+    public static final String TASK_CATEGORY_OPERATION = "3";
+
     public static final String OLD_TASK = "2";
     private Calendar minCalender;
 
@@ -130,12 +132,14 @@ public class OperationActivity extends AppCompatActivity implements SwipeRefresh
 
         Log.d( TAG, "onCreate: "+appData.getUserId() );
 
-        operationArrayList = db.getCategoryTask( appData.getUserId(),"1");
+        operationArrayList = db.getCategoryTask( appData.getUserId(), TASK_CATEGORY_OPERATION );
         if (operationArrayList.size()>0) {
             arrayAdapter = new CustomAdapter( this, operationArrayList );
             operationLV.setAdapter( arrayAdapter );
             Log.d( TAG, "operationArrayList size "+ operationArrayList.size());
         }else {
+            arrayAdapter = new CustomAdapter( this, operationArrayList );
+            operationLV.setAdapter( arrayAdapter );
             Log.d(TAG, "operationArrayList size else "+ operationArrayList.size());
         }
         operationLV.setOnItemClickListener( new AdapterView.OnItemClickListener() {
@@ -147,6 +151,80 @@ public class OperationActivity extends AppCompatActivity implements SwipeRefresh
 
             }
         } );
+
+
+        operationLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           final int pos, long id) {
+                final String taskId = operationArrayList.get( pos ).getTaskId();
+                Log.d( TAG, "onItemLongClick: " +taskId);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder( OperationActivity.this);
+                builder.setCancelable(true);
+                builder.setTitle("Title");
+                builder.setMessage( "Are you sure DELETE this item!!!" );
+                builder.setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d( TAG, "onClick: Yes" );
+
+                                RequestBody username = RequestBody.create( MultipartBody.FORM, appData.getUsername() );
+                                RequestBody password = RequestBody.create( MultipartBody.FORM, appData.getPassword() );
+                                RequestBody id = RequestBody.create( MultipartBody.FORM, taskId );
+
+
+                                Call<RemoveTaskResponseModel> removeTask = connectionApi.removeTask( username, password, id );
+                                removeTask.enqueue( new Callback<RemoveTaskResponseModel>() {
+                                    @Override
+                                    public void onResponse(Call<RemoveTaskResponseModel> call, Response<RemoveTaskResponseModel> response) {
+                                        if (response.code() == 200) {
+                                            removeTaskResponseModel = response.body();
+                                            Log.d( TAG, "onResponse: ----->  " + removeTaskResponseModel.toString() );
+                                            if (removeTaskResponseModel.getError().equals( "false" )) {
+                                                if (db.deletePreviousTask( taskId )){
+
+                                                    operationArrayList.remove( pos );
+
+                                                    arrayAdapter.notifyDataSetChanged();
+
+                                                }else {
+                                                    Toast.makeText( OperationActivity.this, "Some thing is Wrong !!!", Toast.LENGTH_SHORT ).show();
+                                                }
+
+
+                                            } else {
+                                                Log.d( TAG, "onResponse:  else ---> " + response.code() );
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<RemoveTaskResponseModel> call, Throwable t) {
+
+                                        Log.d( TAG, "onFailure: " );
+                                    }
+                                } );
+
+                                dialog.dismiss();
+
+                            }
+                        });
+                builder.setNegativeButton("No",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                Log.d( TAG, "onClick: No" );
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+
+                return true;
+            }
+        });
 
 
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.operationSwipeRefresh);
@@ -176,7 +254,6 @@ public class OperationActivity extends AppCompatActivity implements SwipeRefresh
         final String alarmId=String.valueOf((int) System.currentTimeMillis());
         final String taskId= UUID.randomUUID().toString();
 
-        final int[] categoryNo = {3};
 
         LayoutInflater li = LayoutInflater.from(this);
         final View promptsView = li.inflate(R.layout.add_task_dialog_design, null);
@@ -301,7 +378,7 @@ public class OperationActivity extends AppCompatActivity implements SwipeRefresh
                                     priorityBTN.setChecked( true );
                                     Toast.makeText( OperationActivity.this, "Please fill all filed", Toast.LENGTH_LONG ).show();
 
-                                }else if (categoryNo[0]==0){
+                                }else if (TASK_CATEGORY_OPERATION.equals( "0" )){
                                     Toast.makeText( OperationActivity.this, "Please Select Category", Toast.LENGTH_LONG ).show();
                                     Log.d( TAG, "onClick: Please Select Category" );
 
@@ -321,10 +398,10 @@ public class OperationActivity extends AppCompatActivity implements SwipeRefresh
                                     RequestBody taskTime = RequestBody.create( MultipartBody.FORM, Utilities.timeFormation( taskTimeInMills ) );
                                     RequestBody doctors_id = RequestBody.create( MultipartBody.FORM, userModel.getDoctor_id().toString().trim() );
                                     RequestBody creator_id = RequestBody.create( MultipartBody.FORM, userModel.getUser_unique_id().toString().trim() );
-                                    RequestBody category = RequestBody.create( MultipartBody.FORM, String.valueOf( categoryNo[0] ) );
+                                    RequestBody category = RequestBody.create( MultipartBody.FORM, TASK_CATEGORY_OPERATION );
 
                                     Log.d( TAG, "onClick: \n"+taskNameInput.getText().toString().trim()+"\n"+taskLocationInput.getText().toString().trim()+"\n"+taskDescription.getText().toString().trim()+"\n"+
-                                            String.valueOf( priorityInt )+"\ncategory:  "+categoryNo[0]+"\n"+Utilities.dateFormation( taskTimeInMills )+"\n"+Utilities.timeFormation( taskTimeInMills )+"\n"+
+                                            String.valueOf( priorityInt )+"\ncategory:  "+TASK_CATEGORY_OPERATION+"\n"+Utilities.dateFormation( taskTimeInMills )+"\n"+Utilities.timeFormation( taskTimeInMills )+"\n"+
                                             userModel.getDoctor_id().toString().trim()+"\n"+userModel.getUser_unique_id().toString().trim() );
 
 
@@ -408,7 +485,7 @@ public class OperationActivity extends AppCompatActivity implements SwipeRefresh
         final RequestBody userName = RequestBody.create( MultipartBody.FORM,appData.getUsername());
         final RequestBody password = RequestBody.create( MultipartBody.FORM,appData.getPassword());
         final RequestBody type = RequestBody.create( MultipartBody.FORM,UPCOMING_TASK);
-        final RequestBody category = RequestBody.create( MultipartBody.FORM,"");
+        final RequestBody category = RequestBody.create( MultipartBody.FORM,TASK_CATEGORY_OPERATION);
 
         Call<TaskResponseModel> getTask = connectionApi.getTask( userName,password,type, category );
         getTask.enqueue( new Callback<TaskResponseModel>() {
@@ -444,7 +521,7 @@ public class OperationActivity extends AppCompatActivity implements SwipeRefresh
 
                                 try {
                                     TaskModel taskModel = new TaskModel( taskId,doctors_id,taskName,location,
-                                            Utilities.stringDateTimeToMills( datetime ),Integer.parseInt( priority ),Integer.parseInt( category ),
+                                            Utilities.stringDateTimeToMills( datetime ),Integer.parseInt( priority ),category ,
                                             description, Utilities.stringDateTimeToMills( created_at ),creator_id);
 //                                    Log.d( TAG, "onResponse: Convert time ---> "+ Utilities.dateFormation( Utilities.stringDateTimeToMills( datetime ) ) );
 //                                    Log.d( TAG, "onResponse: "+taskModel.toString() );
@@ -453,6 +530,7 @@ public class OperationActivity extends AppCompatActivity implements SwipeRefresh
 
                                     boolean status = db.addTask( taskModel );
                                     if (status){
+                                        arrayAdapter.notifyDataSetChanged();
                                         final String alarmId = String.valueOf( (int) System.currentTimeMillis() );
 
                                         Log.d( TAG, "onResponse: true status ---> task insert into database" );
@@ -471,7 +549,7 @@ public class OperationActivity extends AppCompatActivity implements SwipeRefresh
                                 }
                             }
 //                            operationArrayList.notify();
-                            arrayAdapter.notifyDataSetChanged();
+
 
                         }
 

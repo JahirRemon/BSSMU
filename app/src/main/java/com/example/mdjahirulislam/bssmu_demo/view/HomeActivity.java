@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mdjahirulislam.bssmu_demo.R;
@@ -34,6 +35,9 @@ public class HomeActivity extends AppCompatActivity
     private DatabaseSource db;
 
     private TextToSpeech myTTS;
+
+    private TextView navUserName;
+    private TextView navUserEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +61,7 @@ public class HomeActivity extends AppCompatActivity
         } );
 
 
-        if (appData.getUserId().equals( "null" )){
-            startActivity( new Intent( HomeActivity.this,LoginActivity.class ) );
-            finish();
-        }else {
-            Log.d( TAG, "onCreate: " + appData.getUserId() );
-        }
+
 
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById( R.id.fab );
@@ -82,6 +81,22 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById( R.id.nav_view );
         navigationView.setNavigationItemSelectedListener( this );
+
+
+        View navView =  navigationView.getHeaderView(0);
+        navUserName = navView.findViewById( R.id.navUserNameTV );
+        navUserEmail = navView.findViewById( R.id.navUserEmailTV );
+
+
+        if (appData.getUserId().equals( "null" )){
+            startActivity( new Intent( HomeActivity.this,LoginActivity.class ) );
+            finish();
+        }else {
+
+            navUserName.setText( db.getUser( appData.getUserId() ).getUser_full_name());
+            navUserEmail.setText( db.getUser( appData.getUserId() ).getUser_email() );
+            Log.d( TAG, "onCreate: " + appData.getUserId() );
+        }
     }
 
     @Override

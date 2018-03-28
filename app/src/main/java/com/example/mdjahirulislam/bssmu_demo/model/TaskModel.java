@@ -12,13 +12,13 @@ public class TaskModel {
     private String taskLocation;
     private long taskTime;
     private int priority;
-    private int category;
+    private String category;
     private String description;
     private long createdAt;
     private String creator_id;
 
     public TaskModel(String taskId, String taskUserID, String taskName, String taskLocation,
-                     long taskTime, int priority, int category ,String description, long createdAt, String creator_id) {
+                     long taskTime, int priority, String category ,String description, long createdAt, String creator_id) {
         this.taskId = taskId;
         this.taskUserID = taskUserID;
         this.taskName = taskName;
@@ -92,11 +92,11 @@ public class TaskModel {
         this.priority = priority;
     }
 
-    public int getCategory() {
+    public String  getCategory() {
         return category;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 

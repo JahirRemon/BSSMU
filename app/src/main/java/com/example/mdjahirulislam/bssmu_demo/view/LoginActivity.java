@@ -174,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public boolean getTaskList(RequestBody userName, RequestBody password, RequestBody type) {
         final boolean[] result = {true};
-        Call<TaskResponseModel> getTask = connectionApi.getTask( userName, password, type , null);
+        Call<TaskResponseModel> getTask = connectionApi.getAllTask( userName, password, type );
         getTask.enqueue( new Callback<TaskResponseModel>() {
             @Override
             public void onResponse(Call<TaskResponseModel> call, Response<TaskResponseModel> response) {
@@ -199,7 +199,7 @@ public class LoginActivity extends AppCompatActivity {
                                 String location = datum.getLocation().toString().trim();
                                 String description = datum.getDescription().toString().trim();
                                 String priority = datum.getPriority().toString().trim();
-                                String category = datum.getPriority().toString().trim();
+                                String category = datum.getCategory().toString().trim();
                                 String taskTime = datum.getTasktime().toString().trim();
                                 String taskDate = datum.getTaskdate().toString().trim();
                                 String datetime = datum.getDatetime().toString().trim();
@@ -208,7 +208,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 try {
                                     TaskModel taskModel = new TaskModel( taskId, doctors_id, taskName, location,
-                                            Utilities.stringDateTimeToMills( datetime ), Integer.parseInt( priority ), Integer.parseInt( category ),
+                                            Utilities.stringDateTimeToMills( datetime ), Integer.parseInt( priority ),  category ,
                                             description,
                                             Utilities.stringDateTimeToMills( created_at ), creator_id );
                                     Log.d( TAG, "onResponse: Convert time ---> "+ Utilities.dateTimeFormation( Utilities.stringDateTimeToMills( datetime ) ) );

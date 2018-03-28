@@ -6,14 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="com.example.mdjahirulislam.bssmu_demo.view.MeetingActivity"
-    android:orientation="vertical"
-    android:background="@drawable/home_item_background">
+    android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/home_item_background"
         android:orientation="vertical">
 
 
@@ -37,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_margin="60dp"
         android:onClick="addReminder"
         app:backgroundTint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_add_white_24dp"/>

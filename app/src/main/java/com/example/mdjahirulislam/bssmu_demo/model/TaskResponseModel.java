@@ -57,9 +57,6 @@ public class TaskResponseModel {
         @SerializedName("priority")
         @Expose
         private Integer priority;
-        @SerializedName("category")
-        @Expose
-        private String category;
         @SerializedName("tasktime")
         @Expose
         private String tasktime;
@@ -75,6 +72,9 @@ public class TaskResponseModel {
         @SerializedName("creator_id")
         @Expose
         private Integer creatorId;
+        @SerializedName("category")
+        @Expose
+        private String category;
 
         public Integer getId() {
             return id;
@@ -190,6 +190,7 @@ public class TaskResponseModel {
                     ", location='" + location + '\'' +
                     ", description='" + description + '\'' +
                     ", priority=" + priority +
+                    ", category='" + category + '\'' +
                     ", tasktime='" + tasktime + '\'' +
                     ", taskdate='" + taskdate + '\'' +
                     ", datetime='" + datetime + '\'' +

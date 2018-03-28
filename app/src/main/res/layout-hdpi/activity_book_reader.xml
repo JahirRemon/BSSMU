@@ -26,7 +26,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".7"
-                android:src="@drawable/images_2"/>
+                android:src="@drawable/human_anatomy"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="The Immortal Life of Henrietta Lacks"
+                    android:text="Human Anatomy - Upper Limb  &amp; Thorax (Volume 1)"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
@@ -49,21 +49,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="Rebecca Skloot"/>
+                    android:text="BD Chaurasia's"/>
 
                 <TextView
                     android:id="@+id/category"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="Terminology"/>
+                    android:text="Anatomy"/>
 
                 <TextView
                     android:id="@+id/edition"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="6th edition"/>
+                    android:text="Volume 1"/>
             </LinearLayout>
 
             <LinearLayout

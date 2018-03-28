@@ -37,6 +37,7 @@ import com.example.mdjahirulislam.bssmu_demo.database.DatabaseSource;
 import com.example.mdjahirulislam.bssmu_demo.helper.ConnectionApi;
 import com.example.mdjahirulislam.bssmu_demo.helper.Utilities;
 import com.example.mdjahirulislam.bssmu_demo.model.AddTaskResponseModel;
+import com.example.mdjahirulislam.bssmu_demo.model.RemoveTaskResponseModel;
 import com.example.mdjahirulislam.bssmu_demo.model.TaskModel;
 import com.example.mdjahirulislam.bssmu_demo.model.TaskResponseModel;
 import com.example.mdjahirulislam.bssmu_demo.model.UserModel;
@@ -84,8 +85,10 @@ public class MeetingActivity extends AppCompatActivity implements SwipeRefreshLa
     private ConnectionApi connectionApi;
     private TaskResponseModel taskResponseModel;
     private AddTaskResponseModel addTaskResponseModel;
+    private RemoveTaskResponseModel removeTaskResponseModel;
     private UserModel userModel;
     public static final String UPCOMING_TASK = "1";
+    public static final String TASK_CATEGORY_MEETING = "2";
     public static final String OLD_TASK = "2";
     private Calendar minCalender;
 
@@ -95,7 +98,6 @@ public class MeetingActivity extends AppCompatActivity implements SwipeRefreshLa
         setContentView( R.layout.activity_meeting );
 
         meetingLV = findViewById( R.id.meetingLV );
-
         meetingArrayList = new ArrayList<>( );
         calendar = Calendar.getInstance();
         simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss a");
@@ -130,12 +132,14 @@ public class MeetingActivity extends AppCompatActivity implements SwipeRefreshLa
 
         Log.d( TAG, "onCreate: "+appData.getUserId() );
 
-        meetingArrayList = db.getCategoryTask( appData.getUserId(),"2" );
+        meetingArrayList = db.getCategoryTask( appData.getUserId(),TASK_CATEGORY_MEETING );
         if (meetingArrayList.size()>0) {
             arrayAdapter = new CustomAdapter( this, meetingArrayList );
             meetingLV.setAdapter( arrayAdapter );
             Log.d( TAG, "meetingArrayList size "+ meetingArrayList.size());
         }else {
+            arrayAdapter = new CustomAdapter( this,meetingArrayList );
+            meetingLV.setAdapter( arrayAdapter );
             Log.d(TAG, "meetingArrayList size else "+ meetingArrayList.size());
         }
         meetingLV.setOnItemClickListener( new AdapterView.OnItemClickListener() {
@@ -147,6 +151,83 @@ public class MeetingActivity extends AppCompatActivity implements SwipeRefreshLa
 
             }
         } );
+
+
+        meetingLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           final int pos, long id) {
+                final String taskId = meetingArrayList.get( pos ).getTaskId();
+                Log.d( TAG, "onItemLongClick: " +taskId);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder( MeetingActivity.this);
+                builder.setCancelable(true);
+                builder.setTitle("Title");
+                builder.setMessage( "Are you sure DELETE this item!!!" );
+                builder.setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d( TAG, "onClick: Yes" );
+
+                                RequestBody username = RequestBody.create( MultipartBody.FORM, appData.getUsername() );
+                                RequestBody password = RequestBody.create( MultipartBody.FORM, appData.getPassword() );
+                                RequestBody id = RequestBody.create( MultipartBody.FORM, taskId );
+
+
+                                Call<RemoveTaskResponseModel> removeTask = connectionApi.removeTask( username, password, id );
+                                removeTask.enqueue( new Callback<RemoveTaskResponseModel>() {
+                                    @Override
+                                    public void onResponse(Call<RemoveTaskResponseModel> call, Response<RemoveTaskResponseModel> response) {
+                                        if (response.code() == 200) {
+                                            removeTaskResponseModel = response.body();
+                                            Log.d( TAG, "onResponse: ----->  " + removeTaskResponseModel.toString() );
+                                            if (removeTaskResponseModel.getError().equals( "false" )) {
+                                                if (db.deletePreviousTask( taskId )){
+
+//                                                    taskArrayList.clear();
+//                                                    arrayAdapter.clear();
+                                                    meetingArrayList.remove( pos );
+
+                                                    arrayAdapter.notifyDataSetChanged();
+
+//                                                    finish();
+                                                }else {
+                                                    Toast.makeText( MeetingActivity.this, "Some thing is Wrong !!!", Toast.LENGTH_SHORT ).show();
+                                                }
+
+
+                                            } else {
+                                                Log.d( TAG, "onResponse:  else ---> " + response.code() );
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<RemoveTaskResponseModel> call, Throwable t) {
+
+                                        Log.d( TAG, "onFailure: " );
+                                    }
+                                } );
+
+                                dialog.dismiss();
+
+                            }
+                        });
+                builder.setNegativeButton("No",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                Log.d( TAG, "onClick: No" );
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+
+                return true;
+            }
+        });
 
 
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshMeeting);
@@ -176,7 +257,7 @@ public class MeetingActivity extends AppCompatActivity implements SwipeRefreshLa
         final String alarmId=String.valueOf((int) System.currentTimeMillis());
         final String taskId= UUID.randomUUID().toString();
 
-        final int[] categoryNo = {2};
+//        final int[] categoryNo = {2};
 
         LayoutInflater li = LayoutInflater.from(this);
         final View promptsView = li.inflate(R.layout.add_task_dialog_design, null);
@@ -194,31 +275,6 @@ public class MeetingActivity extends AppCompatActivity implements SwipeRefreshLa
 
         categorySP.setVisibility( View.GONE );
 
-//        List<String> list = new ArrayList<String>();
-//        list.add("Select Category");
-//        list.add("Appoinment");
-//        list.add("Meeting");
-//        list.add("Operation");
-//        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-//                android.R.layout.simple_spinner_item, list);
-//        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        categorySP.setAdapter(dataAdapter);
-//
-//        categorySP.setOnItemSelectedListener( new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                if (i>0){
-//                    Log.d( TAG, "onItemSelected: " + adapterView.getAdapter().getItem( i ));
-//                    categoryNo[0] = i;
-//                    Log.d( TAG, "onItemSelected: " + categoryNo[0]);
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        } );
 
         final Button taskTimeBTN = promptsView.findViewById( R.id.taskTimeBTN );
         final int year = calendar.get(Calendar.YEAR);
@@ -328,7 +384,7 @@ public class MeetingActivity extends AppCompatActivity implements SwipeRefreshLa
                                     priorityBTN.setChecked( true );
                                     Toast.makeText( MeetingActivity.this, "Please fill all filed", Toast.LENGTH_SHORT ).show();
 
-                                }else if (categoryNo[0]==0){
+                                }else if (TASK_CATEGORY_MEETING.equals( "0" )){
                                     Toast.makeText( MeetingActivity.this, "Please Select Category", Toast.LENGTH_SHORT ).show();
                                     Log.d( TAG, "onClick: Please Select Category" );
 
@@ -348,11 +404,11 @@ public class MeetingActivity extends AppCompatActivity implements SwipeRefreshLa
                                     RequestBody taskTime = RequestBody.create( MultipartBody.FORM, Utilities.timeFormation( taskTimeInMills ) );
                                     RequestBody doctors_id = RequestBody.create( MultipartBody.FORM, userModel.getDoctor_id().toString().trim() );
                                     RequestBody creator_id = RequestBody.create( MultipartBody.FORM, userModel.getUser_unique_id().toString().trim() );
-                                    RequestBody category = RequestBody.create( MultipartBody.FORM, String.valueOf( categoryNo[0] ) );
+                                    RequestBody category = RequestBody.create( MultipartBody.FORM, TASK_CATEGORY_MEETING );
 
                                     Log.d( TAG, "onClick: \n"+taskNameInput.getText().toString().trim()+"\n"+taskLocationInput.getText().toString().trim()+"\n"+taskDescription.getText().toString().trim()+"\n"+
                                             String.valueOf( priorityInt )+"\n"+Utilities.dateFormation( taskTimeInMills )+"\n"+Utilities.timeFormation( taskTimeInMills )+"\n"+
-                                            userModel.getDoctor_id().toString().trim()+"\n"+userModel.getUser_unique_id().toString().trim()+"\ncategory:  "+categoryNo[0] );
+                                            userModel.getDoctor_id().toString().trim()+"\n"+userModel.getUser_unique_id().toString().trim()+"\ncategory:  "+TASK_CATEGORY_MEETING );
 
 
                                     Call<AddTaskResponseModel> addTask = connectionApi.addTask( name,location,description,priority,taskDate,taskTime,doctors_id,creator_id,category );
@@ -435,7 +491,7 @@ public class MeetingActivity extends AppCompatActivity implements SwipeRefreshLa
         final RequestBody userName = RequestBody.create( MultipartBody.FORM,appData.getUsername());
         final RequestBody password = RequestBody.create( MultipartBody.FORM,appData.getPassword());
         final RequestBody type = RequestBody.create( MultipartBody.FORM,UPCOMING_TASK);
-        final RequestBody category = RequestBody.create( MultipartBody.FORM,"2");
+        final RequestBody category = RequestBody.create( MultipartBody.FORM,TASK_CATEGORY_MEETING);
 
         Call<TaskResponseModel> getTask = connectionApi.getTask( userName,password,type, category );
         getTask.enqueue( new Callback<TaskResponseModel>() {
@@ -471,7 +527,7 @@ public class MeetingActivity extends AppCompatActivity implements SwipeRefreshLa
 
                                 try {
                                     TaskModel taskModel = new TaskModel( taskId,doctors_id,taskName,location,
-                                            Utilities.stringDateTimeToMills( datetime ),Integer.parseInt( priority ),Integer.parseInt( category ),description,
+                                            Utilities.stringDateTimeToMills( datetime ),Integer.parseInt( priority ), category ,description,
                                             Utilities.stringDateTimeToMills( created_at ),creator_id);
 //                                    Log.d( TAG, "onResponse: Convert time ---> "+ Utilities.dateFormation( Utilities.stringDateTimeToMills( datetime ) ) );
 //                                    Log.d( TAG, "onResponse: "+taskModel.toString() );
@@ -480,6 +536,10 @@ public class MeetingActivity extends AppCompatActivity implements SwipeRefreshLa
 
                                     boolean status = db.addTask( taskModel );
                                     if (status){
+//                                        arrayAdapter = new CustomAdapter( MeetingActivity.this,meetingArrayList );
+//                                        meetingLV.setAdapter( arrayAdapter );
+                                        arrayAdapter.notifyDataSetChanged();
+
                                         final String alarmId = String.valueOf( (int) System.currentTimeMillis() );
 
                                         Log.d( TAG, "onResponse: true status ---> task insert into database" );
@@ -498,7 +558,6 @@ public class MeetingActivity extends AppCompatActivity implements SwipeRefreshLa
                                 }
                             }
 //                            meetingArrayList.notify();
-                            arrayAdapter.notifyDataSetChanged();
 
                         }
 

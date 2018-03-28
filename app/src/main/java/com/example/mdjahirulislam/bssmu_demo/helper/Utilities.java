@@ -3,6 +3,7 @@ package com.example.mdjahirulislam.bssmu_demo.helper;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -11,10 +12,12 @@ import android.os.Build;
 import android.os.Environment;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.mdjahirulislam.bssmu_demo.R;
 import com.example.mdjahirulislam.bssmu_demo.service.AlarmReceiver;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -121,44 +124,28 @@ public class Utilities {
     }
 
 
-    public static void CopyReadAssets(Context context){
+
+    public static void CopyReadAssets(Context context)
+    {
         AssetManager assetManager = context.getAssets();
 
         InputStream in = null;
         OutputStream out = null;
+        String state = Environment.getExternalStorageState();
+        if (!Environment.MEDIA_MOUNTED.equals(state)) {
+            Toast.makeText(context, "External Storage is not Available", Toast.LENGTH_SHORT).show();
+        }
+        File pdfDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PDFs");
+        if (!pdfDir.exists()) {
+            pdfDir.mkdir();
+        }
+        File file = new File(pdfDir + "/BD_Human_Anatomy_VL_1.pdf");
 
-//        File file = new File(context.getFilesDir(), "Rebecca_Skloot_The_Immortal_Life_of_Henrietta_Lack.pdf");
-        File file = new File(context.getExternalFilesDir( Environment.getExternalStorageState()), "Rebecca_Skloot_The_Immortal_Life_of_Henrietta_Lack.pdf");
-        Log.d( "remon ", "CopyReadAssets: " +file.getPath().toString());
         try
         {
-
-//            in = assetManager.open(filename);
-//            String outDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-//
-//            File outFile = new File(outDir, filename);
-//            if(outFile.createNewFile()){
-//                return;
-//            }
-//
-//            out = new FileOutputStream(outFile);
-//
-
-
-            in = assetManager.open("Rebecca_Skloot_The_Immortal_Life_of_Henrietta_Lack.pdf");
-            String outDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-            File outFile = new File(outDir, "Rebecca_Skloot_The_Immortal_Life_of_Henrietta_Lack.pdf");
-            if(outFile.createNewFile()){
-                Log.d( "if-----> ", "CopyReadAssets: " );
-                return;
-            }
-            out = new FileOutputStream(outFile);
-//            Log.d( "Tag 1", "CopyReadAssets: in ---> "+in.toString() );
-//            out = context.openFileOutput(file.getName(), Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
-//            Log.d( "Tag 2", "CopyReadAssets: in ---> "+out.toString() );
-
+            in = assetManager.open("BD_Human_Anatomy_VL_1.pdf");
+            out = new BufferedOutputStream(new FileOutputStream(file));
             copyFile(in, out);
-            Log.d( "Tag 3", "CopyReadAssets: in ---> " +outFile.getPath());
             in.close();
             in = null;
             out.flush();
@@ -166,30 +153,23 @@ public class Utilities {
             out = null;
         } catch (Exception e)
         {
-            Log.e("tag", e.getMessage()+"----> "+e.getLocalizedMessage());
+            Log.e("tag", e.getMessage());
         }
-
-        Intent intent = new Intent( Intent.ACTION_VIEW);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Uri apkURI = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
-
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-//            Log.d( "Remon", "CopyReadAssets: " );
-//            Uri apkURI = FileProvider.getUriForFile( context,
-//                    context.getApplicationContext().getPackageName() + ".provider", file);
-            intent.setDataAndType(apkURI, "application/pdf");
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }else {
-            intent.setDataAndType(
-                    Uri.parse("file://" + context.getFilesDir() + "/Rebecca_Skloot_The_Immortal_Life_of_Henrietta_Lack.pdf"),
-                    "application/pdf");
+        if (file.exists()) //Checking for the file is exist or not
+        {
+            Uri path = Uri.fromFile(file);
+            Intent objIntent = new Intent(Intent.ACTION_VIEW);
+            objIntent.setDataAndType(path, "application/pdf");
+//            objIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Intent intent1 = Intent.createChooser(objIntent, "Open PDF with..");
+            try {
+                context.startActivity(intent1);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(context, "Activity Not Found Exception ", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(context, "The file not exists! ", Toast.LENGTH_SHORT).show();
         }
-
-
-//        intent.getData();
-        context.startActivity(intent);
     }
 
     private static void copyFile(InputStream in, OutputStream out) throws IOException

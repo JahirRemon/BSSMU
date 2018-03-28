@@ -2,6 +2,7 @@ package com.example.mdjahirulislam.bssmu_demo.helper;
 
 import com.example.mdjahirulislam.bssmu_demo.model.AddTaskResponseModel;
 import com.example.mdjahirulislam.bssmu_demo.model.LoginResponseModel;
+import com.example.mdjahirulislam.bssmu_demo.model.RemoveTaskResponseModel;
 import com.example.mdjahirulislam.bssmu_demo.model.TaskModel;
 import com.example.mdjahirulislam.bssmu_demo.model.TaskResponseModel;
 
@@ -34,6 +35,25 @@ public interface ConnectionApi {
             @Part ("password") RequestBody password,
             @Part ("type") RequestBody type,
             @Part ("category") RequestBody category
+
+    );
+
+    @Multipart
+    @POST("api/task/get")
+    Call<TaskResponseModel> getAllTask(
+            @Part ("username") RequestBody username,
+            @Part ("password") RequestBody password,
+            @Part ("type") RequestBody type
+
+    );
+
+
+    @Multipart
+    @POST("api/task/remove")
+    Call<RemoveTaskResponseModel> removeTask(
+            @Part ("username") RequestBody username,
+            @Part ("password") RequestBody password,
+            @Part ("id") RequestBody id
 
     );
 
